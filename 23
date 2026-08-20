@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Management Information System (BMIS)</title>
+    <style>
+        :root {
+            --primary: #c62828;
+            --primary-light: #ffcdd2;
+            --secondary: #2c3e50;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --success: #2e7d32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        aside h2 {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+            color: #ff8a80;
+        }
+
+        aside nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        aside nav a:hover, aside nav a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Content Layout */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .user-info {
+            font-size: 0.9rem;
+            color: #666;
+            background: var(--primary-light);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .dashboard-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        /* Metric Cards */
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* Detailed Section */
+        .content-section {
+            padding: 0 30px 30px 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: #555;
+            background-color: #fcfcfc;
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge.success { background-color: #e8f5e9; color: var(--success); }
+        .badge.danger { background-color: var(--primary-light); color: var(--primary); }
+
+        /* Report List */
+        .report-list {
+            list-style: none;
+        }
+
+        .report-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-list li a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .report-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <h2>Blood Management IS</h2>
+        <nav>
+            <a href="#" class="active">Dashboard Overview</a>
+            <a href="#">Donor Records</a>
+            <a href="#">Activity Performance</a>
+            <a href="#">Confidential Reports</a>
+            <a href="#">System Security</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+        <header>
+            <h1>Blood Donation Management & Analytics</h1>
+            <div class="user-info">Secure Access: Management Role</div>
+        </header>
+
+        <!-- KPI Metrics Grid -->
+        <div class="dashboard-container">
+            <div class="card">
+                <h3>Total Donors Registered</h3>
+                <div class="value">24,580</div>
+            </div>
+            <div class="card">
+                <h3>Units Collected (This Month)</h3>
+                <div class="value">1,420</div>
+            </div>
+            <div class="card" style="border-left-color: var(--success);">
+                <h3>Blood Stock Status</h3>
+                <div class="value" style="color: var(--success);">Optimal</div>
+            </div>
+            <div class="card" style="border-left-color: #f59e0b;">
+                <h3>Pending Clearances</h3>
+                <div class="value">14</div>
+            </div>
+        </div>
+
+        <!-- Data Display Panels -->
+        <div class="content-section">
+            <!-- Quick Access Donor Records Panel -->
+            <div class="panel">
+                <h2>
+                    <span>Recent Donor Records (National Network)</span>
+                    <span style="font-size: 0.8rem; color: #666; font-weight: normal;">Encrypted Data Stream</span>
+                </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Donor ID</th>
+                            <th>Name</th>
+                            <th>Blood Group</th>
+                            <th>Region</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#DN-88321</td>
+                            <td>Alex Mercer</td>
+                            <td><strong>O+</strong></td>
+                            <td>North Zone</td>
+                            <td><span class="badge success">Eligible</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DN-88322</td>
+                            <td>Sarah Jenkins</td>
+                            <td><strong>A-</strong></td>
+                            <td>Central Hub</td>
+                            <td><span class="badge danger">Deffered</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DN-88323</td>
+                            <td>David Miller</td>
+                            <td><strong>B+</strong></td>
+                            <td>East Zone</td>
+                            <td><span class="badge success">Eligible</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DN-88324</td>
+                            <td>Elena Rostova</td>
+                            <td><strong>AB+</strong></td>
+                            <td>South Zone</td>
+                            <td><span class="badge success">Eligible</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Medical Reports & Decision Support Panel -->
+            <div class="panel">
+                <h2>Management Reports</h2>
+                <ul class="report-list">
+                    <li>
+                        <span>Monthly Collection Analytics</span>
+                        <a href="#">Download</a>
+                    </li>
+                    <li>
+                        <span>Regional Supply Forecast</span>
+                        <a href="#">Download</a>
+                    </li>
+                    <li>
+                        <span>Donor Retention Metrics</span>
+                        <a href="#">Download</a>
+                    </li>
+                    <li>
+                        <span>Confidential Audit Logs</span>
+                        <a href="#">View</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
