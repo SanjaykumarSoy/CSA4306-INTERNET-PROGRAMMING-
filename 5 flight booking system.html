@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Book Flight Ticket</title>
+   
+</head>
+<body>
+
+<header>
+
+    <h1> Flight Reservation System</h1>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="book-ticket.html">Book Ticket</a>
+    </nav>
+
+</header>
+
+<div class="booking-container">
+
+<form class="booking-form">
+
+<h2>Flight Ticket Booking</h2>
+
+<label>Passenger Name</label>
+<input type="text" placeholder="Enter Passenger Name" required>
+
+<label>From</label>
+<select required>
+    <option>Select City</option>
+    <option>Chennai</option>
+    <option>Bangalore</option>
+    <option>Hyderabad</option>
+    <option>Mumbai</option>
+    <option>Delhi</option>
+</select>
+
+<label>To</label>
+<select required>
+    <option>Select City</option>
+    <option>Chennai</option>
+    <option>Bangalore</option>
+    <option>Hyderabad</option>
+    <option>Mumbai</option>
+    <option>Delhi</option>
+</select>
+
+<label>Journey Date</label>
+<input type="date" required>
+
+<label>Flight</label>
+<select required>
+    <option>Select Flight</option>
+    <option>IndiGo</option>
+    <option>Air India</option>
+    <option>SpiceJet</option>
+    <option>Akasa Air</option>
+</select>
+
+<label>Class</label>
+<select required>
+    <option>Economy</option>
+    <option>Business</option>
+    <option>First Class</option>
+</select>
+
+<label>Number of Passengers</label>
+<input type="number" min="1" max="6" required>
+
+<label>Seat Number</label>
+<select required>
+    <option>A1</option>
+    <option>A2</option>
+    <option>B1</option>
+    <option>B2</option>
+    <option>C1</option>
+    <option>C2</option>
+</select>
+
+<label>Total Fare (₹)</label>
+<input type="text" value="5000" readonly>
+
+<input type="submit" value="Book Ticket">
+
+</form>
+
+</div>
+
+
+</body>
+</html>
