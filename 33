@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KodaikanalEats - Restaurant Bookings in Kodaikanal</title>
+    <style>
+        :root {
+            --primary: #047857;
+            --secondary: #065f46;
+            --accent: #d97706;
+            --bg-color: #f7fee7;
+            --card-bg: #ffffff;
+            --text-color: #1c1917;
+            --muted: #78716c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Top Announcement Bar */
+        .top-bar {
+            background-color: var(--secondary);
+            color: #ecfdf5;
+            padding: 8px 40px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar span {
+            color: #fde047;
+            font-weight: 600;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: #f0fdf4;
+        }
+
+        .btn-offer {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-offer:hover {
+            background-color: #b45309 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(4,120,87,0.75), rgba(4,120,87,0.75)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #ecfdf5;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
+
+        /* Search Filter Bar */
+        .search-bar {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: -30px auto 40px auto;
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .search-bar input, .search-bar select {
+            padding: 10px 15px;
+            border: 1px solid #d6d3d1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Restaurant Cards Grid */
+        .grid-restaurants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+
+        .card-content p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .rating-cuisine {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .rating-stars {
+            color: #d97706;
+        }
+
+        .card-footer {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-tag {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .book-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+
+        .book-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Special Offers Section */
+        .offers-section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 35px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .offers-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .offers-section h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .offers-section p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .deal-highlight {
+            background-color: #fef3c7;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .deal-highlight h4 {
+            font-size: 1rem;
+            color: #b45309;
+            margin-bottom: 8px;
+        }
+
+        .deal-highlight p {
+            font-size: 0.85rem;
+            color: #78350f;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div>Discover Kodaikanal's Finest Culinary Experiences</div>
+        <div>Need Help? Call Support: <span>+91 (4542) 240-555</span></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">
+            🍲 KodaikanalEats
+        </a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Restaurants</a>
+            <a href="#">Menus & Photos</a>
+            <a href="#">Contact Us</a>
+            <a href="#" class="btn-offer">Special Offers</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Reserve Tables in the Hills</h1>
+        <p>Explore fine dining, cozy casual eateries, and specialty local cafes across picturesque Kodaikanal with instant confirmations.</p>
+    </section>
+
+    <!-- Interactive Search & Filter Bar -->
+    <div class="search-bar">
+        <input type="text" placeholder="Search by restaurant name...">
+        <select>
+            <option value="">All Cuisines</option>
+            <option value="continental">Continental & Cafe</option>
+            <option value="south-indian">South Indian & Local</option>
+            <option value="multi">Multi-Cuisine Fine Dining</option>
+        </select>
+        <select>
+            <option value="">All Locations</option>
+            <option value="lake">Coaker's Walk / Lake</option>
+            <option value="bazaar">Town Bazaar</option>
+            <option value="green-valley">Green Valley View</option>
+        </select>
+        <button class="search-btn">Search</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <h2 class="section-title">Featured Dining Spots</h2>
+
+        <!-- Restaurants Grid -->
+        <div class="grid-restaurants">
+            <!-- Restaurant 1 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80" alt="The Royal Tibet">
+                <div class="card-content">
+                    <h3>The Royal Tibet</h3>
+                    <p>Authentic Tibetan delicacies, steaming momos, and warm soups with a panoramic hillside view.</p>
+                    <div class="rating-cuisine">
+                        <span>Tibetan / Asian</span>
+                        <span class="rating-stars">★★★★★ (4.8)</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="location-tag">📍 Lake Road</span>
+                    <a href="#" class="book-btn">Book Table</a>
+                </div>
+            </div>
+
+            <!-- Restaurant 2 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=400&q=80" alt="Silver Oak Cafe">
+                <div class="card-content">
+                    <h3>Silver Oak Fine Dining</h3>
+                    <p>Multi-cuisine gourmet experience surrounded by lush pine trees and ambient wood interior.</p>
+                    <div class="rating-cuisine">
+                        <span>Multi-Cuisine</span>
+                        <span class="rating-stars">★★★★★ (4.9)</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="location-tag">📍 Coaker's Walk</span>
+                    <a href="#" class="book-btn">Book Table</a>
+                </div>
+            </div>
+
+            <!-- Restaurant 3 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=400&q=80" alt="Cloud Street Cafe">
+                <div class="card-content">
+                    <h3>Cloud Street Cafe</h3>
+                    <p>Cozy bohemian retreat famous for wood-fired pizzas, artisanal coffee, and fresh bakery items.</p>
+                    <div class="rating-cuisine">
+                        <span>Cafe / Continental</span>
+                        <span class="rating-stars">★★★★☆ (4.7)</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="location-tag">📍 PT Road</span>
+                    <a href="#" class="book-btn">Book Table</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Offers & Exclusive Deals Section -->
+        <div class="offers-section">
+            <div>
+                <h2>Enhanced Dining with Instant Bookings</h2>
+                <p>
+                    KodaikanalEats simplifies your mountain getaway schedule. Browse complete restaurant profiles featuring high-resolution photo galleries, user reviews, and comprehensive menus before locking down your reservation slot.
+                </p>
+                <p>
+                    Receive real-time booking confirmations straight to your device and unlock exclusive discounts reserved solely for our platform members.
+                </p>
+            </div>
+            
+            <div class="deal-highlight">
+                <h4>🎉 Special Seasonal Offer</h4>
+                <p>Get <strong>20% off</strong> on total dining bills when booking evening slots at partner fine dining spots this weekend!</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
