@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InsureEasy</title>
+   
+</head>
+<body>
+
+<header>
+    <h1> InsureEasy</h1>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="policies.html">Policies</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+    </nav>
+</header>
+
+<div class="home">
+    <h2>Welcome to InsureEasy</h2>
+    <p>Easy and simple insurance management.</p>
+
+    <a href="policies.html">
+        <button>View Policies</button>
+    </a>
+</div>
+
+<h2 class="title">Our Insurance Plans</h2>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Health Insurance</h3>
+        <p>Protect yourself and your family.</p>
+        <p>Premium: ₹5,000/year</p>
+    </div>
+
+    <div class="card">
+        <h3>Car Insurance</h3>
+        <p>Protect your vehicle from unexpected expenses.</p>
+        <p>Premium: ₹3,000/year</p>
+    </div>
+
+    <div class="card">
+        <h3>Home Insurance</h3>
+        <p>Protect your home and valuable belongings.</p>
+        <p>Premium: ₹4,000/year</p>
+    </div>
+
+</div>
+</body>
+</html>
