@@ -1,0 +1,746 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Library Management System</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #475569;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ca8a04;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Top Navigation Bar */
+        header {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .role-selector-zone {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #eff6ff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .role-selector-zone label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        select {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* App Layout Container */
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: calc(100vh - 65px);
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item button {
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--secondary);
+            transition: all 0.2s;
+        }
+
+        .nav-item button:hover, .nav-item button.active {
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+
+        /* Main Workspace Window */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Cards & UI Structural Elements */
+        .card {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        input, select, textarea {
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #93c5fd;
+            border-color: var(--primary);
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-success { background-color: var(--success); color: white; }
+        .btn-danger { background-color: var(--danger); color: white; }
+
+        /* Data Tables styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--surface);
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background-color: #dcfce7; color: #15803d; }
+        .badge-warning { background-color: #fef9c3; color: #a16207; }
+        .badge-danger { background-color: #fee2e2; color: #b91c1c; }
+
+        /* Utilities */
+        .flex-row { display: flex; gap: 1rem; align-items: flex-end; }
+        .text-right { text-align: right; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>EduLib Engine</h1>
+        </div>
+        <div class="role-selector-zone">
+            <label for="globalRoleSwitch">Simulation Console Role:</label>
+            <select id="globalRoleSwitch" onchange="toggleSystemRole()">
+                <option value="student">Student Account View</option>
+                <option value="admin">Librarian Admin Dashboard</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation (Swapped via JS depending on role) -->
+        <aside>
+            <ul class="nav-menu" id="sidebarMenu">
+                <!-- Injected via JavaScript dynamically -->
+            </ul>
+        </aside>
+
+        <!-- Main Content Canvas -->
+        <main>
+            <!-- SECTION: SEARCH CATALOG (Shared) -->
+            <section id="view-catalog" class="view-section active">
+                <h2>Books Catalog</h2>
+                <div class="card">
+                    <div class="flex-row">
+                        <div class="form-group" style="flex: 1;">
+                            <input type="text" id="catalogSearchInput" placeholder="Search books by title, author, or ISBN..." onkeyup="filterCatalog()">
+                        </div>
+                    </div>
+                    <table id="catalogTable">
+                        <thead>
+                            <tr>
+                                <th>ISBN</th>
+                                <th>Book Title</th>
+                                <th>Author</th>
+                                <th>Available / Total Copies</th>
+                                <th class="admin-only">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catalogTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: INVENTORY CONTROL (Admin Only) -->
+            <section id="view-inventory" class="view-section">
+                <h2>Manage Catalog Inventory</h2>
+                <div class="card">
+                    <h3>Add / Update Book Registry Record</h3>
+                    <form id="bookForm" onsubmit="saveBookItem(event)" style="margin-top:1rem;">
+                        <input type="hidden" id="formBookId">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Book Title</label>
+                                <input type="text" id="formBookTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Author</label>
+                                <input type="text" id="formBookAuthor" required>
+                            </div>
+                            <div class="form-group">
+                                <label>ISBN String</label>
+                                <input type="text" id="formBookIsbn" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Total In-Stock Copies</label>
+                                <input type="number" id="formBookCopies" min="1" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Commit Entry to Catalog</button>
+                        <button type="button" class="btn" onclick="resetBookForm()" style="background:#cbd5e1;">Cancel</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- SECTION: BORROW OPERATIONS (Admin Only) -->
+            <section id="view-issue-return" class="view-section">
+                <h2>Circulation Desk (Book Processing)</h2>
+                <div class="card">
+                    <h3>Issue A Book Copy</h3>
+                    <form id="issueForm" onsubmit="processIssueBook(event)" style="margin-top:1rem;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Select Target Book</label>
+                                <select id="issueFormBook" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Student Academic Email</label>
+                                <input type="email" id="issueFormUser" placeholder="student@college.edu" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Loan Period (Days)</label>
+                                <input type="number" id="issueFormDays" value="14" min="1" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Generate Outbound Loan Agreement</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Active Circulation Ledger & Return Status Tracking</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction Record ID</th>
+                                <th>Borrower Identity</th>
+                                <th>Book Loaned</th>
+                                <th>Due Date Deadline</th>
+                                <th>Current fine Status</th>
+                                <th>Condition Tracking Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminCirculationTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: ACADEMIC CORE STUDY MATERIALS (Shared) -->
+            <section id="view-materials" class="view-section">
+                <h2>Academic Curriculum Study Repositories</h2>
+                <div class="card admin-only">
+                    <h3>Upload/Distribute Digital Materials</h3>
+                    <form onsubmit="uploadNewMaterial(event)" style="margin-top: 1rem;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Document Title</label>
+                                <input type="text" id="matTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Academic Year</label>
+                                <select id="matYear">
+                                    <option value="1">1st Year Undergraduate</option>
+                                    <option value="2">2nd Year Undergraduate</option>
+                                    <option value="3">3rd Year Undergraduate</option>
+                                    <option value="4">4th Year Undergraduate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Course Semester</label>
+                                <select id="matSemester">
+                                    <option value="1">Semester I</option>
+                                    <option value="2">Semester II</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publish Resource File</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Resource Catalog Lookup Filters</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Year Filter</label>
+                            <select id="filterMatYear" onchange="renderMaterialsTable()">
+                                <option value="all">Display All Years</option>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Semester Filter</label>
+                            <select id="filterMatSem" onchange="renderMaterialsTable()">
+                                <option value="all">Display All Semesters</option>
+                                <option value="1">Semester I</option>
+                                <option value="2">Semester II</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material Name</th>
+                                <th>Year Placement</th>
+                                <th>Academic Term</th>
+                                <th>Distribution Operations</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materialsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: STUDENT BORROW HISTORY & FINES (Student Only) -->
+            <section id="view-student-account" class="view-section">
+                <h2>My Personal Academic Library Account Dashboard</h2>
+                <div class="card">
+                    <h3>My Live Activity & Historical Ledger Summary</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Book Name</th>
+                                <th>Date Checked Out</th>
+                                <th>Return Matrix/Deadline</th>
+                                <th>Assessed Late Penalties</th>
+                                <th>Status Badge</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentHistoryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // --- 1. SEED IN-MEMORY APPLICATION STATE DATA ---
+        let books = [
+            { id: "101", title: "Introduction to Algorithms", author: "Thomas H. Cormen", isbn: "978-0262033848", total: 5, available: 4 },
+            { id: "102", title: "Clean Code", author: "Robert C. Martin", isbn: "978-0132350884", total: 3, available: 3 },
+            { id: "103", title: "Database System Concepts", author: "Abraham Silberschatz", isbn: "978-0073523323", total: 4, available: 2 }
+        ];
+
+        let loans = [
+            { id: "L-9001", bookId: "103", userEmail: "alex.jones@college.edu", issueDate: "2026-07-01", expiryDate: "2026-07-15", returnDate: null, fine: 5.00, status: "overdue" },
+            { id: "L-9002", bookId: "101", userEmail: "alex.jones@college.edu", issueDate: "2026-07-10", expiryDate: "2026-07-24", returnDate: null, fine: 0.00, status: "issued" }
+        ];
+
+        let materials = [
+            { id: "M-501", title: "Advanced Data Structures Lecture Notes Lecture 1-4", year: "2", semester: "1" },
+            { id: "M-502", title: "Compiler Design Lab Reference Manual Ver 2.0", year: "3", semester: "2" }
+        ];
+
+        const loggedInStudentEmail = "alex.jones@college.edu";
+        const dailyFineRate = 2.50; // Currency metric placeholder units per delayed calendar day
+
+        // --- 2. CORE VIEW ROTATION NAVIGATION LOGIC ---
+        function toggleSystemRole() {
+            const currentRole = document.getElementById("globalRoleSwitch").value;
+            const menuContainer = document.getElementById("sidebarMenu");
+            
+            // Adjust administrative component styling visibility dynamically 
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.style.display = currentRole === 'admin' ? 'block' : 'none';
+            });
+
+            // Rebuild architectural context links safely inside navigation column
+            if (currentRole === 'admin') {
+                menuContainer.innerHTML = `
+                    <li class="nav-item"><button class="active" onclick="switchView('view-catalog', this)">View Books Catalog</button></li>
+                    <li class="nav-item"><button onclick="switchView('view-inventory', this)">Inventory Management</button></li>
+                    <li class="nav-item"><button onclick="switchView('view-issue-return', this)">Circulation Desk</button></li>
+                    <li class="nav-item"><button onclick="switchView('view-materials', this)">Syllabus Materials</button></li>
+                `;
+            } else {
+                menuContainer.innerHTML = `
+                    <li class="nav-item"><button class="active" onclick="switchView('view-catalog', this)">Search Library Catalog</button></li>
+                    <li class="nav-item"><button onclick="switchView('view-student-account', this)">My Borrowing History & Fines</button></li>
+                    <li class="nav-item"><button onclick="switchView('view-materials', this)">Download Materials</button></li>
+                `;
+            }
+            switchView('view-catalog', menuContainer.querySelector('button'));
+            renderAllDataTables();
+        }
+
+        function switchView(viewId, buttonElement) {
+            document.querySelectorAll('.view-section').forEach(section => section.classList.remove('active'));
+            document.querySelectorAll('.nav-item button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(viewId).classList.add('active');
+            if(buttonElement) buttonElement.classList.add('active');
+        }
+
+        // --- 3. DOM DATA RENDERERS ---
+        function renderAllDataTables() {
+            renderCatalogTable();
+            renderCirculationTables();
+            renderMaterialsTable();
+            populateBookSelectors();
+        }
+
+        function renderCatalogTable(filteredBooks = null) {
+            const currentRole = document.getElementById("globalRoleSwitch").value;
+            const listToRender = filteredBooks || books;
+            const targetTbody = document.getElementById("catalogTableBody");
+            targetTbody.innerHTML = "";
+
+            listToRender.forEach(book => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><code>${book.isbn}</code></td>
+                    <td><strong>${book.title}</strong></td>
+                    <td>${book.author}</td>
+                    <td>${book.available} / ${book.total} Available</td>
+                    <td class="admin-only" style="display: ${currentRole === 'admin' ? 'table-cell' : 'none'}">
+                        <button class="btn btn-primary" style="padding:0.25rem 0.5rem; font-size:0.8rem;" onclick="loadBookToForm('${book.id}')">Edit</button>
+                        <button class="btn btn-danger" style="padding:0.25rem 0.5rem; font-size:0.8rem;" onclick="deleteBookRecord('${book.id}')">Delete</button>
+                    </td>
+                `;
+                targetTbody.appendChild(tr);
+            });
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById("catalogSearchInput").value.toLowerCase();
+            const filtered = books.filter(b => 
+                b.title.toLowerCase().includes(query) || 
+                b.author.toLowerCase().includes(query) || 
+                b.isbn.includes(query)
+            );
+            renderCatalogTable(filtered);
+        }
+
+        function renderCirculationTables() {
+            const adminBody = document.getElementById("adminCirculationTableBody");
+            const studentBody = document.getElementById("studentHistoryTableBody");
+            
+            adminBody.innerHTML = "";
+            studentBody.innerHTML = "";
+
+            loans.forEach(loan => {
+                const targetBook = books.find(b => b.id === loan.bookId) || {title: "Unknown Record"};
+                
+                // Construct Table Content row element properties for Librarian Admin
+                const trAdmin = document.createElement("tr");
+                trAdmin.innerHTML = `
+                    <td><small class="badge" style="background:#e2e8f0;">${loan.id}</small></td>
+                    <td><code>${loan.userEmail}</code></td>
+                    <td>${targetBook.title}</td>
+                    <td>${loan.expiryDate}</td>
+                    <td><strong>$${loan.fine.toFixed(2)}</strong></td>
+                    <td>
+                        ${loan.status !== 'returned' ? `<button class="btn btn-success" style="padding:0.25rem 0.5rem; font-size:0.8rem;" onclick="processReturnBook('${loan.id}')">Mark Returned</button>` : `<span class="badge badge-success">Closed Transaction</span>`}
+                    </td>
+                `;
+                adminBody.appendChild(trAdmin);
+
+                // Construct Table Content elements matching target contextual Student profiles
+                if (loan.userEmail === loggedInStudentEmail) {
+                    const trStudent = document.createElement("tr");
+                    let badgeClass = loan.status === 'overdue' ? 'badge-danger' : (loan.status === 'returned' ? 'badge-success' : 'badge-warning');
+                    
+                    trStudent.innerHTML = `
+                        <td><strong>${targetBook.title}</strong></td>
+                        <td>${loan.issueDate}</td>
+                        <td>${loan.status === 'returned' ? `Returned on ${loan.returnDate}` : `Due by ${loan.expiryDate}`}</td>
+                        <td><span class="${loan.fine > 0 ? 'badge badge-danger' : ''}">$${loan.fine.toFixed(2)}</span></td>
+                        <td><span class="badge ${badgeClass}">${loan.status}</span></td>
+                    `;
+                    studentBody.appendChild(trStudent);
+                }
+            });
+        }
+
+        function renderMaterialsTable() {
+            const yearFilter = document.getElementById("filterMatYear").value;
+            const semFilter = document.getElementById("filterMatSem").value;
+            const targetTbody = document.getElementById("materialsTableBody");
+            targetTbody.innerHTML = "";
+
+            materials.forEach(mat => {
+                if(yearFilter !== 'all' && mat.year !== yearFilter) return;
+                if(semFilter !== 'all' && mat.semester !== semFilter) return;
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>📄 ${mat.title}</td>
+                    <td>Year ${mat.year}</td>
+                    <td>Semester ${mat.semester === '1' ? 'I' : 'II'}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary" style="padding:0.25rem 0.5rem; font-size:0.8rem; text-decoration:none;" onclick="alert('Starting core sandbox file download loop for emulation asset...')">Download PDF</a>
+                    </td>
+                `;
+                targetTbody.appendChild(tr);
+            });
+        }
+
+        function populateBookSelectors() {
+            const selector = document.getElementById("issueFormBook");
+            selector.innerHTML = "";
+            books.forEach(b => {
+                if(b.available > 0) {
+                    let opt = document.createElement("option");
+                    opt.value = b.id;
+                    opt.textContent = `${b.title} (${b.available} available)`;
+                    selector.appendChild(opt);
+                }
+            });
+        }
+
+        // --- 4. DATA ENGINE MODIFICATION OPERATIONS ---
+        function saveBookItem(e) {
+            e.preventDefault();
+            const id = document.getElementById("formBookId").value;
+            const title = document.getElementById("formBookTitle").value;
+            const author = document.getElementById("formBookAuthor").value;
+            const isbn = document.getElementById("formBookIsbn").value;
+            const copies = parseInt(document.getElementById("formBookCopies").value);
+
+            if(id) {
+                // Update Pathway execution logic
+                let b = books.find(item => item.id === id);
+                let checkDifference = copies - b.total;
+                b.title = title; b.author = author; b.isbn = isbn;
+                b.total = copies; b.available += checkDifference;
+            } else {
+                // Creation pathway engine injection
+                books.push({
+                    id: String(Date.now()),
+                    title: title, author: author, isbn: isbn, total: copies, available: copies
+                });
+            }
+            resetBookForm();
+            renderAllDataTables();
+        }
+
+        function loadBookToForm(id) {
+            let b = books.find(item => item.id === id);
+            document.getElementById("formBookId").value = b.id;
+            document.getElementById("formBookTitle").value = b.title;
+            document.getElementById("formBookAuthor").value = b.author;
+            document.getElementById("formBookIsbn").value = b.isbn;
+            document.getElementById("formBookCopies").value = b.total;
+            switchView('view-inventory');
+        }
+
+        function deleteBookRecord(id) {
+            if(confirm("Are you sure you want to delete this book record?")) {
+                books = books.filter(b => b.id !== id);
+                renderAllDataTables();
+            }
+        }
+
+        function resetBookForm() {
+            document.getElementById("bookForm").reset();
+            document.getElementById("formBookId").value = "";
+        }
+
+        function processIssueBook(e) {
+            e.preventDefault();
+            const bookId = document.getElementById("issueFormBook").value;
+            const userEmail = document.getElementById("issueFormUser").value;
+            const limitDays = parseInt(document.getElementById("issueFormDays").value);
+
+            let book = books.find(b => b.id === bookId);
+            if(book && book.available > 0) {
+                book.available--;
+                
+                let today = new Date();
+                let expiry = new Date();
+                expiry.setDate(today.getDate() + limitDays);
+
+                loans.unshift({
+                    id: `L-${Math.floor(1000 + Math.random() * 9000)}`,
+                    bookId: bookId,
+                    userEmail: userEmail,
+                    issueDate: today.toISOString().split('T')[0],
+                    expiryDate: expiry.toISOString().split('T')[0],
+                    returnDate: null,
+                    fine: 0.00,
+                    status: "issued"
+                });
+
+                document.getElementById("issueForm").reset();
+                renderAllDataTables();
+                alert("Book issued successfully!");
+            }
+        }
+
+        function processReturnBook(loanId) {
+            let targetLoan = loans.find(l => l.id === loanId);
+            if(targetLoan && targetLoan.status !== 'returned') {
+                let targetBook = books.find(b => b.id === targetLoan.bookId);
+                if(targetBook) targetBook.available++;
+
+                targetLoan.returnDate = new Date().toISOString().split('T')[0];
+                targetLoan.status = "returned";
+                
+                renderAllDataTables();
+                alert(`Book structural verification return logged. Calculated Outstanding Fines Due: $${targetLoan.fine.toFixed(2)}`);
+            }
+        }
+
+        function uploadNewMaterial(e) {
+            e.preventDefault();
+            const title = document.getElementById("matTitle").value;
+            const year = document.getElementById("matYear").value;
+            const semester = document.getElementById("matSemester").value;
+
+            materials.push({
+                id: `M-${Date.now()}`,
+                title: title, year: year, semester: semester
+            });
+
+            document.getElementById("matTitle").value = "";
+            renderMaterialsTable();
+            alert("Digital curriculum material asset loaded successfully!");
+        }
+
+        // --- 5. INITIAL ENGINE BOOTSTRAP INITIALIZATION ---
+        toggleSystemRole();
+    </script>
+</body>
+</html>
+
