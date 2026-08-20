@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ram Infotech - Laptop Sales & Expert Service Center</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e293b;
+            --accent: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Top Announcement Bar */
+        .top-bar {
+            background-color: var(--secondary);
+            color: #cbd5e1;
+            padding: 8px 40px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar span {
+            color: #93c5fd;
+            font-weight: 600;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: #f1f5f9;
+        }
+
+        .btn-repair {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-repair:hover {
+            background-color: #d97706 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30,41,59,0.85), rgba(30,41,59,0.85)), url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
+
+        .badge-hub {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Store Grid */
+        .grid-store {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.15rem;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+
+        .card-content p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            font-size: 0.85rem;
+            color: #f59e0b;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card-footer {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .buy-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .buy-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Service Center Section */
+        .service-section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 35px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .service-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .service-section h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .service-section p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .service-tracker {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .service-tracker h4 {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .service-tracker ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .service-tracker ul li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div>Welcome to Ram Infotech | Complete Laptop Solutions</div>
+        <div>Support Hotline: <span>+1 (800) 555-RAM</span></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">
+            💻 Ram Infotech
+        </a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Online Store</a>
+            <a href="#">Service Center</a>
+            <a href="#">About Us</a>
+            <a href="#">FAQ</a>
+            <a href="#">Contact</a>
+            <a href="#" class="btn-repair">Schedule Repair</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge-hub">Sales & Professional Repair Hub</div>
+        <h1>Your One-Stop Solution for Laptops</h1>
+        <p>Explore top-tier laptops with competitive pricing, detailed specs, and expert hardware and software repair services you can trust.</p>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <h2 class="section-title">Featured Online Store Laptops</h2>
+
+        <!-- Store Grid -->
+        <div class="grid-store">
+            <!-- Laptop 1 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="UltraBook Pro">
+                <div class="card-content">
+                    <h3>UltraBook Pro 14"</h3>
+                    <p>Intel Core i7, 16GB RAM, 512GB SSD. Designed for peak professional productivity.</p>
+                    <div class="rating">★★★★★ (4.8 / 42 Reviews)</div>
+                </div>
+                <div class="card-footer">
+                    <span class="price">$999.00</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Laptop 2 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=400&q=80" alt="Apex Gaming Beast">
+                <div class="card-content">
+                    <h3>Apex Gaming Beast 15</h3>
+                    <p>AMD Ryzen 9, RTX 4060, 32GB RAM. Ultimate performance for gamers & creators.</p>
+                    <div class="rating">★★★★★ (4.9 / 88 Reviews)</div>
+                </div>
+                <div class="card-footer">
+                    <span class="price">$1,449.00</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Laptop 3 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=400&q=80" alt="EcoBook Student">
+                <div class="card-content">
+                    <h3>EcoBook Student Edition</h3>
+                    <p>Intel Core i5, 8GB RAM, 256GB SSD. Lightweight, reliable, and budget-friendly.</p>
+                    <div class="rating">★★★★☆ (4.6 / 31 Reviews)</div>
+                </div>
+                <div class="card-footer">
+                    <span class="price">$599.00</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Center Section -->
+        <div class="service-section">
+            <div>
+                <h2>Professional Service Center & Support</h2>
+                <p>
+                    Experiencing hardware issues, software glitches, or slow performance? At Ram Infotech, our certified technicians provide comprehensive diagnostics, screen replacements, motherboard repairs, and scheduled maintenance.
+                </p>
+                <p>
+                    Easily schedule a repair online, track your device's service status in real-time, or explore our troubleshooting guides for quick fixes at home.
+                </p>
+            </div>
+            
+            <div class="service-tracker">
+                <h4>Service Portal Features</h4>
+                <ul>
+                    <li>✓ Real-time repair status tracking</li>
+                    <li>✓ Certified parts & warranty assurance</li>
+                    <li>✓ Access to online troubleshooting guides</li>
+                    <li>✓ Quick drop-off & pickup scheduling</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
