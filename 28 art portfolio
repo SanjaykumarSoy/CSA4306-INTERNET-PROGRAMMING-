@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtistryHub - Emily Harris Portfolio</title>
+    <style>
+        :root {
+            --primary: #1c1917;
+            --accent: #b45309;
+            --bg-color: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-color: #292524;
+            --muted: #78716c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 25px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(28,25,23,0.5), rgba(28,25,23,0.5)), url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin-bottom: 25px;
+            color: #e7e5e4;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #92400e;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* Artworks Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+
+        .artwork-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Biography Snippet Section */
+        .bio-section {
+            background-color: #f5f2eb;
+            padding: 60px 40px;
+            border-radius: 8px;
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .bio-section img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .bio-content h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .bio-content p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="#" class="logo">ArtistryHub</a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Gallery</a>
+            <a href="#">Biography</a>
+            <a href="#">Blog</a>
+            <a href="#">Store</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Emily Harris</h1>
+        <p>Celebrating a lifelong journey of contemporary expressionism, color mastery, and immersive visual storytelling.</p>
+        <a href="#" class="btn">Explore Portfolio</a>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h2 class="section-title">Notable Artworks</h2>
+        
+        <div class="grid">
+            <!-- Artwork 1 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80" alt="Ethereal Horizon">
+                <div class="card-content">
+                    <h3>Ethereal Horizon</h3>
+                    <p>Oil on canvas capturing the shifting light of dawn across coastal dunes.</p>
+                    <div class="artwork-meta">
+                        <span>2025 Collection</span>
+                        <span>View Details</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Artwork 2 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80" alt="Symphony in Blue">
+                <div class="card-content">
+                    <h3>Symphony in Blue</h3>
+                    <p>Mixed media exploration of deep oceanic tones and golden structural highlights.</p>
+                    <div class="artwork-meta">
+                        <span>2024 Collection</span>
+                        <span>View Details</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Artwork 3 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1582561573065-224443916298?auto=format&fit=crop&w=600&q=80" alt="Whispering Woods">
+                <div class="card-content">
+                    <h3>Whispering Woods</h3>
+                    <p>Acrylic textures interpreting ancient forest canopies through abstract geometry.</p>
+                    <div class="artwork-meta">
+                        <span>2025 Collection</span>
+                        <span>View Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biography Highlights Section -->
+        <div class="bio-section">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Emily Harris Portrait">
+            <div class="bio-content">
+                <h2>The Artist's Journey</h2>
+                <p>Renowned artist Emily Harris has spent over two decades pushing the boundaries of contemporary texture and color harmony. Her works have been featured in major exhibitions across galleries in London, New York, and Paris.</p>
+                <p>Through ArtistryHub, fans and collectors can explore high-resolution digital galleries, order limited-edition prints, or book private gallery sessions and consultation inquiries.</p>
+                <a href="#" class="btn" style="display: inline-block; margin-top: 10px;">Read Full Biography</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
