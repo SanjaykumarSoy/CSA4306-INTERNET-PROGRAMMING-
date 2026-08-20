@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Squad - Penalty Collection & Management</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0f172a;
+            --accent: #dc2626;
+            --success: #16a34a;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+        }
+
+        .badge-role {
+            background-color: #e0f2fe;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Grid Layout for Police & User portals */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .file-upload {
+            border: 2px dashed #cbd5e1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            color: #64748b;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #172554;
+        }
+
+        /* Tables for User Penalties */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: #64748b;
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-badge.unpaid { background-color: #fee2e2; color: var(--accent); }
+        .status-badge.paid { background-color: #dcfce7; color: var(--success); }
+
+        .action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="#" class="logo">Traffic Squad <span>👮‍♂️⚡</span></a>
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">FIR Records</a>
+            <a href="#">Penalty Analytics</a>
+            <span class="badge-role">Traffic Police Portal</span>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Enforcement & Penalty Management System</h2>
+
+        <div class="grid">
+            <!-- Traffic Police: Issue Online FIR / Fine Panel -->
+            <div class="panel">
+                <h2>
+                    <span>Issue Online FIR / Fine Ticket</span>
+                    <span style="font-size: 0.75rem; color: #64748b;">Officer ID: #TP-409</span>
+                </h2>
+                <form>
+                    <div class="form-group">
+                        <label>Vehicle Registration Number</label>
+                        <input type="text" placeholder="e.g., TN-01-AB-1234" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Owner Name</label>
+                        <input type="text" placeholder="Enter vehicle owner's full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Traffic Violation Type</label>
+                        <select required>
+                            <option value="">Select Offence</option>
+                            <option>Signal Jumping / Red Light Violation</option>
+                            <option>Over Speeding</option>
+                            <option>No Helmet / Seatbelt</option>
+                            <option>Illegal Parking</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fine Amount ($)</label>
+                        <input type="number" placeholder="Enter fine amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Vehicle & Owner Photo Proof</label>
+                        <div class="file-upload">
+                            📁 Drag & drop photo or browse files
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Generate Online FIR & Fine Receipt</button>
+                </form>
+            </div>
+
+            <!-- Vehicle Owner: Penalty Inspection & Receipt View -->
+            <div class="panel">
+                <h2>
+                    <span>Vehicle Owner Penalty Status</span>
+                    <span style="font-size: 0.75rem; color: #64748b;">Live Database Sync</span>
+                </h2>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Check Vehicle Penalties</label>
+                    <input type="text" placeholder="Enter Vehicle Number to Search...">
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FIR ID</th>
+                            <th>Violation</th>
+                            <th>Fine</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#FIR-9012</td>
+                            <td>Over Speeding</td>
+                            <td>$150</td>
+                            <td><span class="status-badge unpaid">Unpaid</span></td>
+                            <td><a href="#" class="action-link">Pay / View</a></td>
+                        </tr>
+                        <tr>
+                            <td>#FIR-8843</td>
+                            <td>No Helmet</td>
+                            <td>$50</td>
+                            <td><span class="status-badge paid">Paid</span></td>
+                            <td><a href="#" class="action-link">Receipt</a></td>
+                        </tr>
+                        <tr>
+                            <td>#FIR-7721</td>
+                            <td>Signal Jump</td>
+                            <td>$200</td>
+                            <td><span class="status-badge unpaid">Unpaid</span></td>
+                            <td><a href="#" class="action-link">Pay / View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
