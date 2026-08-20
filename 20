@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentRide - Vehicle Rental Platform</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div>
+            <div>
+                <h1>🚗 RentRide</h1>
+                <p>Your Trusted Vehicle Rental Platform</p>
+            </div>
+            <div>
+                <a href="#login">Login</a>
+                <a href="#register">Register</a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#vehicles">Vehicles</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home">
+            <div>
+                <h2>Find Your Perfect Ride</h2>
+                <p>Browse our extensive fleet of vehicles for every need and budget</p>
+                <div>
+                    <a href="#vehicles">Browse Vehicles</a>
+                    <a href="#register">Get Started</a>
+                </div>
+            </div>
+            <div>
+                <p>✅ 24/7 Customer Support</p>
+                <p>✅ Secure Payments</p>
+                <p>✅ Free Cancellation</p>
+                <p>✅ Insurance Included</p>
+            </div>
+        </section>
+
+        <!-- Search & Filter Section -->
+        <section id="search">
+            <h2>Find Your Vehicle</h2>
+            <form>
+                <div>
+                    <label for="vehicleType">Vehicle Type</label>
+                    <select id="vehicleType" name="vehicleType">
+                        <option value="">All Types</option>
+                        <option value="car">Car</option>
+                        <option value="suv">SUV</option>
+                        <option value="truck">Truck</option>
+                        <option value="van">Van</option>
+                        <option value="luxury">Luxury</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="Enter city or airport">
+                </div>
+                <div>
+                    <label for="pickupDate">Pickup Date</label>
+                    <input type="date" id="pickupDate" name="pickupDate">
+                </div>
+                <div>
+                    <label for="returnDate">Return Date</label>
+                    <input type="date" id="returnDate" name="returnDate">
+                </div>
+                <div>
+                    <label for="priceRange">Price Range</label>
+                    <select id="priceRange" name="priceRange">
+                        <option value="">Any Price</option>
+                        <option value="under50">Under $50/day</option>
+                        <option value="50-100">$50 - $100/day</option>
+                        <option value="100-200">$100 - $200/day</option>
+                        <option value="over200">Over $200/day</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit">🔍 Search Vehicles</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Vehicle Categories -->
+        <section>
+            <h2>Browse by Category</h2>
+            <div>
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%236b7280'%3E🚗%3C/text%3E%3C/svg%3E" alt="Cars">
+                    <h3>Cars</h3>
+                    <p>24 vehicles available</p>
+                    <a href="#cars">View All</a>
+                </div>
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%236b7280'%3E🚙%3C/text%3E%3C/svg%3E" alt="SUVs">
+                    <h3>SUVs</h3>
+                    <p>18 vehicles available</p>
+                    <a href="#suvs">View All</a>
+                </div>
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%236b7280'%3E🚛%3C/text%3E%3C/svg%3E" alt="Trucks">
+                    <h3>Trucks</h3>
+                    <p>12 vehicles available</p>
+                    <a href="#trucks">View All</a>
+                </div>
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%236b7280'%3E🚐%3C/text%3E%3C/svg%3E" alt="Vans">
+                    <h3>Vans</h3>
+                    <p>8 vehicles available</p>
+                    <a href="#vans">View All</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Vehicles -->
+        <section id="vehicles">
+            <h2>Featured Vehicles</h2>
+            <div>
+                <!-- Vehicle 1 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🚗%3C/text%3E%3C/svg%3E" alt="Toyota Camry">
+                    <div>
+                        <h3>Toyota Camry</h3>
+                        <p>Sedan • 5 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐⭐ (4.8/5) • 127 reviews</p>
+                        <p><strong>$45</strong> / day</p>
+                        <ul>
+                            <li>✔ Air Conditioning</li>
+                            <li>✔ GPS Navigation</li>
+                            <li>✔ Bluetooth</li>
+                            <li>✔ Backup Camera</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vehicle 2 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🚙%3C/text%3E%3C/svg%3E" alt="Honda CR-V">
+                    <div>
+                        <h3>Honda CR-V</h3>
+                        <p>SUV • 5 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐⭐ (4.9/5) • 98 reviews</p>
+                        <p><strong>$65</strong> / day</p>
+                        <ul>
+                            <li>✔ All-Wheel Drive</li>
+                            <li>✔ Roof Rack</li>
+                            <li>✔ Heated Seats</li>
+                            <li>✔ Apple CarPlay</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vehicle 3 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🚛%3C/text%3E%3C/svg%3E" alt="Ford F-150">
+                    <div>
+                        <h3>Ford F-150</h3>
+                        <p>Truck • 3 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐ (4.7/5) • 156 reviews</p>
+                        <p><strong>$85</strong> / day</p>
+                        <ul>
+                            <li>✔ 4x4 Capability</li>
+                            <li>✔ Towing Package</li>
+                            <li>✔ Bed Liner</li>
+                            <li>✔ Off-Road Tires</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vehicle 4 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🚐%3C/text%3E%3C/svg%3E" alt="Mercedes Sprinter">
+                    <div>
+                        <h3>Mercedes Sprinter</h3>
+                        <p>Van • 8 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐ (4.6/5) • 84 reviews</p>
+                        <p><strong>$120</strong> / day</p>
+                        <ul>
+                            <li>✔ Spacious Interior</li>
+                            <li>✔ Rear AC</li>
+                            <li>✔ Entertainment System</li>
+                            <li>✔ Luggage Rack</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vehicle 5 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🏎️%3C/text%3E%3C/svg%3E" alt="BMW 7 Series">
+                    <div>
+                        <h3>BMW 7 Series</h3>
+                        <p>Luxury Sedan • 4 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐⭐ (5.0/5) • 67 reviews</p>
+                        <p><strong>$180</strong> / day</p>
+                        <ul>
+                            <li>✔ Leather Seats</li>
+                            <li>✔ Massage Seats</li>
+                            <li>✔ Premium Sound</li>
+                            <li>✔ Ambient Lighting</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vehicle 6 -->
+                <div>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23e5e7eb'/%3E%3Ctext x='150' y='110' font-size='60' text-anchor='middle' fill='%236b7280'%3E🚗%3C/text%3E%3C/svg%3E" alt="Tesla Model 3">
+                    <div>
+                        <h3>Tesla Model 3</h3>
+                        <p>Electric Sedan • 5 Seats • Automatic</p>
+                        <p>⭐⭐⭐⭐⭐ (4.9/5) • 203 reviews</p>
+                        <p><strong>$95</strong> / day</p>
+                        <ul>
+                            <li>✔ Electric Vehicle</li>
+                            <li>✔ Autopilot</li>
+                            <li>✔ Large Touchscreen</li>
+                            <li>✔ Free Charging</li>
+                        </ul>
+                        <a href="#book">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose RentRide -->
+        <section>
+            <h2>Why Choose RentRide?</h2>
+            <div>
+                <div>
+                    <div>🔒</div>
+                    <h3>Secure Payments</h3>
+                    <p>Multiple payment options with bank-level encryption</p>
+                </div>
+                <div>
+                    <div>🛡️</div>
+                    <h3>Insurance Included</h3>
+                    <p>Full insurance coverage on every rental</p>
+                </div>
+                <div>
+                    <div>📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Book and manage rentals from any device</p>
+                </div>
+                <div>
+                    <div>🔄</div>
+                    <h3>Free Cancellation</h3>
+                    <p>Cancel up to 24 hours before pickup</p>
+                </div>
+                <div>
+                    <div>✅</div>
+                    <h3>No Hidden Fees</h3>
+                    <p>Transparent pricing with all costs included</p>
+                </div>
+                <div>
+                    <div>🎯</div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer service</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section>
+            <h2>What Our Customers Say</h2>
+            <div>
+                <div>
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23e5e7eb'/%3E%3Ctext x='30' y='38' font-size='30' text-anchor='middle' fill='%236b7280'%3E👤%3C/text%3E%3C/svg%3E" alt="Customer">
+                        <div>
+                            <p><strong>Sarah Johnson</strong></p>
+                            <p>⭐⭐⭐⭐⭐</p>
+                        </div>
+                    </div>
+                    <p>"Amazing experience! The car was spotless and the booking process was seamless. Highly recommend RentRide!"</p>
+                    <p><small>Rented: Toyota Camry • 5 days</small></p>
+                </div>
+
+                <div>
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23e5e7eb'/%3E%3Ctext x='30' y='38' font-size='30' text-anchor='middle' fill='%236b7280'%3E👤%3C/text%3E%3C/svg%3E" alt="Customer">
+                        <div>
+                            <p><strong>Mike Thompson</strong></p>
+                            <p>⭐⭐⭐⭐⭐</p>
+                        </div>
+                    </div>
+                    <p>"Rented an SUV for a family trip. The vehicle was in excellent condition and the customer support was outstanding."</p>
+                    <p><small>Rented: Honda CR-V • 7 days</small></p>
+                </div>
+
+                <div>
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23e5e7eb'/%3E%3Ctext x='30' y='38' font-size='30' text-anchor='middle' fill='%236b7280'%3E👤%3C/text%3E%3C/svg%3E" alt="Customer">
+                        <div>
+                            <p><strong>Emily Davis</strong></p>
+                            <p>⭐⭐⭐⭐⭐</p>
+                        </div>
+                    </div>
+                    <p>"Great selection of vehicles. The Tesla was amazing! Easy booking and competitive prices."</p>
+                    <p><small>Rented: Tesla Model 3 • 3 days</small></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Form -->
+        <section id="register">
+            <h2>Create Your Account</h2>
+            <form>
+                <div>
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div>
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div>
+                    <label for="regPhone">Phone Number</label>
+                    <input type="tel" id="regPhone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div>
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" name="password" placeholder="Create a password" required>
+                </div>
+                <div>
+                    <label for="regConfirmPassword">Confirm Password</label>
+                    <input type="password" id="regConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <div>
+                    <label for="regLicense">Driver's License Number</label>
+                    <input type="text" id="regLicense" name="license" placeholder="Enter your driver's license" required>
+                </div>
+                <div>
+                    <button type="submit">Create Account</button>
+                </div>
+                <p>Already have an account? <a href="#login">Login here</a></p>
+            </form>
+        </section>
+
+        <!-- Login Form -->
+        <section id="login">
+            <h2>Login to Your Account</h2>
+            <form>
+                <div>
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div>
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                <div>
+                    <button type="submit">Login</button>
+                </div>
+                <p>Don't have an account? <a href="#register">Register here</a></p>
+                <p><a href="#forgot-password">Forgot Password?</a></p>
+            </form>
+        </section>
+
+        <!-- Booking Form -->
+        <section id="book">
+            <h2>Book Your Vehicle</h2>
+            <form>
+                <div>
+                    <label for="bookVehicle">Select Vehicle</label>
+                    <select id="bookVehicle" name="vehicle">
+                        <option value="">Choose a vehicle...</option>
+                        <option value="camry">Toyota Camry - $45/day</option>
+                        <option value="crv">Honda CR-V - $65/day</option>
+                        <option value="f150">Ford F-150 - $85/day</option>
+                        <option value="sprinter">Mercedes Sprinter - $120/day</option>
+                        <option value="bmw">BMW 7 Series - $180/day</option>
+                        <option value="tesla">Tesla Model 3 - $95/day</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="pickupLocation">Pickup Location</label>
+                    <select id="pickupLocation" name="pickupLocation">
+                        <option value="">Select location...</option>
+                        <option value="airport">Airport</option>
+                        <option value="downtown">Downtown</option>
+                        <option value="mall">City Mall</option>
+                        <option value="station">Train Station</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="returnLocation">Return Location</label>
+                    <select id="returnLocation" name="returnLocation">
+                        <option value="">Select location...</option>
+                        <option value="airport">Airport</option>
+                        <option value="downtown">Downtown</option>
+                        <option value="mall">City Mall</option>
+                        <option value="station">Train Station</option>
+                        <option value="different">Different Location</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="bookPickupDate">Pickup Date</label>
+                    <input type="datetime-local" id="bookPickupDate" name="pickupDate" required>
+                </div>
+                <div>
+                    <label for="bookReturnDate">Return Date</label>
+                    <input type="datetime-local" id="bookReturnDate" name="returnDate" required>
+                </div>
+                <div>
+                    <label for="insurance">Insurance Option</label>
+                    <select id="insurance" name="insurance">
+                        <option value="standard">Standard (Included)</option>
+                        <option value="premium">Premium - $15/day</option>
+                        <option value="platinum">Platinum - $25/day</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="extras">Additional Extras</label>
+                    <div>
+                        <label><input type="checkbox" name="extras" value="gps"> GPS Navigation (+$5/day)</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="extras" value="child"> Child Seat (+$8/day)</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="extras" value="roof"> Roof Rack (+$10/day)</label>
+                    </div>
+                    <div>
+                        <label><input type="checkbox" name="extras" value="towing"> Towing Package (+$20/day)</label>
+                    </div>
+                </div>
+                <div>
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="">Select payment method...</option>
+                        <option value="credit">Credit Card</option>
+                        <option value="debit">Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="applepay">Apple Pay</option>
+                        <option value="googlepay">Google Pay</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX">
+                </div>
+                <div>
+                    <label for="expiryDate">Expiry Date</label>
+                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY">
+                </div>
+                <div>
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="XXX">
+                </div>
+                <div>
+                    <button type="submit">Confirm Booking</button>
+                </div>
+                <p>✅ Real-time booking confirmation sent to your email</p>
+            </form>
+        </section>
+
+        <!-- User Dashboard -->
+        <section id="dashboard">
+            <h2>My Dashboard</h2>
+            
+            <!-- User Profile -->
+            <div>
+                <h3>Profile Information</h3>
+                <ul>
+                    <li><strong>Name:</strong> John Doe</li>
+                    <li><strong>Email:</strong> john.doe@email.com</li>
+                    <li><strong>Member Since:</strong> January 2024</li>
+                    <li><strong>Total Rentals:</strong> 12</li>
+                    <li><strong>Loyalty Points:</strong> 1,250</li>
+                </ul>
+                <a href="#edit-profile">Edit Profile</a>
+            </div>
+
+            <!-- Current Bookings -->
+            <div>
+                <h3>Current Bookings</h3>
+                <div>
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80'%3E%3Crect width='100' height='80' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-size='30' text-anchor='middle' fill='%236b7280'%3E🚙%3C/text%3E%3C/svg%3E" alt="Current Rental">
+                        <div>
+                            <h4>Honda CR-V</h4>
+                            <p>📅 Pickup: Jan 15, 2026 - 10:00 AM</p>
+                            <p>📅 Return: Jan 18, 2026 - 10:00 AM</p>
+                            <p>📍 Pickup: Airport</p>
+                            <p>📍 Return: Airport</p>
+                            <p>💰 Total: $195.00</p>
+                            <p>📊 Status: <strong>Confirmed</strong></p>
+                            <a href="#modify">Modify Booking</a>
+                            <a href="#cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80'%3E%3Crect width='100' height='80' fill='%23e5e7eb'/%3E%3Ctext x='50' y='50' font-size='30' text-anchor='middle' fill='%236b7280'%3E🚗%3C/text%3E%3C/svg%3E" alt="Upcoming Rental">
+                        <div>
+                            <h4>Toyota Camry</h4>
+                            <p>📅 Pickup: Jan 22, 2026 - 08:00 AM</p>
+                            <p>📅 Return: Jan 24, 2026 - 08:00 AM</p>
+                            <p>📍 Pickup: Downtown</p>
+                            <p>📍 Return: Mall</p>
+                            <p>💰 Total: $135.00</p>
+                            <p>📊 Status: <strong>Pending</strong></p>
+                            <a href="#modify">Modify Booking</a>
+                            <a href="#cancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rental History -->
+            <div>
+                <h3>Rental History</h3>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Vehicle</th>
+                            <th>Dates</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#RID-2024-001</td>
+                            <td>BMW 7 Series</td>
+                            <td>Dec 10-15, 2025</td>
+                            <td>$900.00</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>#RID-2024-002</td>
+                            <td>Ford F-150</td>
+                            <td>Nov 5-8, 2025</td>
+                            <td>$340.00</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>#RID-2024-003</td>
+                            <td>Tesla Model 3</td>
+                            <td>Oct 20-22, 2025</td>
+                            <td>$285.00</td>
+                            <td>Completed</td>
+                        </tr>
+                        <tr>
+                            <td>#RID-2024-004</td>
+                            <td>Mercedes Sprinter</td>
+                            <td>Sep 1-5, 2025</td>
+                            <td>$600.00</td>
+                            <td>Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#view-all">View All History</a>
+            </div>
+
+            <!-- Notifications -->
+            <div>
+                <h3>Notifications</h3>
+                <ul>
+                    <li>✅ Booking confirmed for Honda CR-V (Jan 15, 2026)</li>
+                    <li>📧 Reminder: Your rental starts in 3 days</li>
+                    <li>⭐ Rate your recent rental experience</li>
+                    <li>🎉 Special offer: 20% off your next rental</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Customer Support -->
+        <section id="support">
+            <h2>24/7 Customer Support</h2>
+            <div>
+                <div>
+                    <h3>📞 Phone Support</h3>
+                    <p><strong>Toll Free:</strong> 1-800-RENT-RIDE (1-800-736-8743)</p>
+                    <p><strong>International:</strong> +1 (555) 123-4567</p>
+                    <p><strong>Hours:</strong> 24/7, 365 days</p>
+                </div>
+                <div>
+                    <h3>📧 Email Support</h3>
+                    <p><strong>General Inquiries:</strong> support@rentride.com</p>
+                    <p><strong>Bookings:</strong> bookings@rentride.com</p>
+                    <p><strong>Emergency:</strong> emergency@rentride.com</p>
+                    <p><strong>Response Time:</strong> Within 2 hours</p>
+                </div>
+                <div>
+                    <h3>💬 Live Chat</h3>
+                    <p>Chat with our support team in real-time</p>
+                    <p>Available: 24/7</p>
+                    <a href="#chat">Start Chat</a>
+                </div>
+                <div>
+                    <h3>📱 Mobile App</h3>
+                    <p>Download our app for easy booking</p>
+                    <p>Available on iOS and Android</p>
+                    <a href="#app-store">App Store</a>
+                    <a href="#google-play">Google Play</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section>
+            <h2>Frequently Asked Questions</h2>
+            <div>
+                <div>
+                    <h3>What documents do I need to rent a vehicle?</h3>
+                    <p>You need a valid driver's license, a credit card for the security deposit, and your passport or national ID for identification.</p>
+                </div>
+                <div>
+                    <h3>What is the minimum age to rent?</h3>
+                    <p>The minimum age is 21 years. Drivers under 25 may incur a young driver surcharge.</p>
+                </div>
+                <div>
+                    <h3>Is insurance included in the rental price?</h3>
+                    <p>Yes, standard insurance is included. You can upgrade to premium coverage for additional protection.</p>
+                </div>
+                <div>
+                    <h3>Can I cancel my booking?</h3>
+                    <p>Yes, you can cancel for free up to 24 hours before your scheduled pickup time.</p>
+                </div>
+                <div>
+                    <h3>What payment methods do you accept?</h3>
+                    <p>We accept Credit Cards, Debit Cards, PayPal, Apple Pay, and Google Pay.</p>
+                </div>
+                <div>
+                    <h3>Can I return the vehicle to a different location?</h3>
+                    <p>Yes, one-way rentals are available for an additional fee depending on the location.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us -->
+        <section id="about">
+            <h2>About RentRide</h2>
+            <div>
+                <div>
+                    <h3>Our Mission</h3>
+                    <p>To provide convenient, reliable, and affordable vehicle rentals for every journey.</p>
+                </div>
+                <div>
+                    <h3>Our Fleet</h3>
+                    <p>Over 200 vehicles across 50 locations nationwide. From economy cars to luxury SUVs.</p>
+                </div>
+                <div>
+                    <h3>Our Commitment</h3>
+                    <p>We are committed to sustainability with a growing fleet of electric and hybrid vehicles.</p>
+                </div>
+                <div>
+                    <h3>Our Achievements</h3>
+                    <ul>
+                        <li>⭐ 4.8/5 Average Rating</li>
+                        <li>🏆 Best Car Rental 2024</li>
+                        <li>🌍 50+ Locations</li>
+                        <li>👥 50,000+ Happy Customers</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form>
+                <div>
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" name="name" placeholder="Enter your name" required>
+                </div>
+                <div>
+                    <label for="contactEmail">Email Address</label>
+                    <input type="email" id="contactEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div>
+                    <label for="contactSubject">Subject</label>
+                    <select id="contactSubject" name="subject">
+                        <option value="">Select subject...</option>
+                        <option value="booking">Booking Inquiry</option>
+                        <option value="payment">Payment Issue</option>
+                        <option value="vehicle">Vehicle Issue</option>
+                        <option value="billing">Billing Question</option>
+                        <option value="feedback">General Feedback</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" name="message" rows="5" placeholder="Describe your issue or inquiry" required></textarea>
+                </div>
+                <div>
+                    <button type="submit">Send Message</button>
+                </div>
+                <p>We'll respond within 2 hours during business hours</p>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <div>
+                <h4>🚗 RentRide</h4>
+                <p>Your trusted partner for vehicle rentals since 2020</p>
+                <p>📍 123 Main Street, New York, NY 10001</p>
+                <p>📞 1-800-RENT-RIDE</p>
+                <p>✉️ info@rentride.com</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#vehicles">Vehicles</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Vehicle Types</h4>
+                <ul>
+                    <li><a href="#cars">Cars</a></li>
+                    <li><a href="#suvs">SUVs</a></li>
+                    <li><a href="#trucks">Trucks</a></li>
+                    <li><a href="#vans">Vans</a></li>
+                    <li><a href="#luxury">Luxury</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#terms">Terms & Conditions</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#cancellation">Cancellation Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Follow Us</h4>
+                <ul>
+                    <li><a href="#facebook">Facebook</a></li>
+                    <li><a href="#twitter">Twitter</a></li>
+                    <li><a href="#instagram">Instagram</a></li>
+                    <li><a href="#youtube">YouTube</a></li>
+                    <li><a href="#linkedin">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <p>© 2026 RentRide. All rights reserved.</p>
+            <p>Secure payments with industry-standard encryption</p>
+            <p>
+                <span>💳 Visa</span>
+                <span>💳 Mastercard</span>
+                <span>💳 Amex</span>
+                <span>💳 PayPal</span>
+                <span>💳 Apple Pay</span>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
