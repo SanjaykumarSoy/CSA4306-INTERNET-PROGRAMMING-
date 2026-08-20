@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnWell Tuition Centre - Excellence in Education</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --secondary: #0369a1;
+            --accent: #f59e0b;
+            --bg-color: #f0f9ff;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Top Announcement Ticker Bar */
+        .top-bar {
+            background-color: var(--secondary);
+            color: #e0f2fe;
+            padding: 8px 40px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar span {
+            color: #fde047;
+            font-weight: 600;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: #e0f2fe;
+        }
+
+        .btn-register {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 14px !important;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            background-color: #d97706 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(2,132,199,0.85), rgba(3,105,161,0.85)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #e0f2fe;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
+
+        .badge-center {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Announcements & Grid Layout */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Announcements Box */
+        .announcements-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+        }
+
+        .announcements-card h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .announcement-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .announcement-item:last-child {
+            border-bottom: none;
+        }
+
+        .announcement-date {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .announcement-item h4 {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin: 3px 0;
+        }
+
+        .announcement-item p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* Maintenance Requests Box */
+        .maintenance-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .maintenance-card h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .maintenance-card p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .maint-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .maint-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Course Offerings Section */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .course-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .course-card h4 {
+            font-size: 1.15rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .course-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary);
+            border-top: 1px solid #f1f5f9;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Announcement Ticker Bar -->
+    <div class="top-bar">
+        <div>Welcome to LearnWell Tuition Centre Portal</div>
+        <div>Latest Notice: <span>New Advanced Mathematics batch starting next Monday!</span></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">
+            📚 LearnWell Tuition
+        </a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Announcements</a>
+            <a href="#">Course Offerings</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#" class="btn-register">Online Registration</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge-center">Empowering Academic Success</div>
+        <h1>Shaping Bright Futures Together</h1>
+        <p>Streamlining class schedules, announcements, student profiles, and interactive learning management for our entire tuition community.</p>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Announcements and Maintenance Grid -->
+        <div class="grid-layout">
+            <!-- Central Announcements Section -->
+            <div class="announcements-card">
+                <h3>📢 Central Announcements & Updates</h3>
+                <div class="announcement-item">
+                    <span class="announcement-date">August 7, 2026</span>
+                    <h4>Mid-Term Physics Revision Workshop</h4>
+                    <p>Free weekend workshop scheduled for all Grade 10 and 12 physics students in Hall B.</p>
+                </div>
+                <div class="announcement-item">
+                    <span class="announcement-date">August 4, 2026</span>
+                    <h4>Updated Evening Batch Timings</h4>
+                    <p>Chemistry tuition slots for batch C have been adjusted to start 15 minutes earlier effective immediately.</p>
+                </div>
+                <div class="announcement-item">
+                    <span class="announcement-date">August 1, 2026</span>
+                    <h4>Annual Science Fair Registration Open</h4>
+                    <p>Students interested in participating can now submit project titles through their student profiles.</p>
+                </div>
+            </div>
+
+            <!-- Maintenance Requests Section -->
+            <div class="maintenance-card">
+                <div>
+                    <h3>🛠️ Maintenance Requests</h3>
+                    <p>Encountering a facility issue or need technical assistance with your student portal account? Submit a request to our administrative team.</p>
+                </div>
+                <a href="#" class="maint-btn">Submit Assistance Request</a>
+            </div>
+        </div>
+
+        <h2 class="section-title">Popular Course Offerings</h2>
+
+        <!-- Course Offerings Grid -->
+        <div class="courses-grid">
+            <div class="course-card">
+                <h4>Advanced Mathematics</h4>
+                <p>Comprehensive coverage of calculus, algebra, and geometry tailored for high school board exams.</p>
+                <div class="course-meta">
+                    <span>Mon / Wed / Fri</span>
+                    <span>$120 / Month</span>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <h4>Physics & Chemistry Lab</h4>
+                <p>Concept-driven theory combined with hands-on practical experiment sessions and past paper drills.</p>
+                <div class="course-meta">
+                    <span>Tue / Thu / Sat</span>
+                    <span>$135 / Month</span>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <h4>English Literature & Grammar</h4>
+                <p>Enhancing critical essay writing, comprehension speed, and advanced grammatical structures.</p>
+                <div class="course-meta">
+                    <span>Sat / Sun</span>
+                    <span>$95 / Month</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
