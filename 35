@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTransit - Digital Bus Pass Management</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Top Announcement Bar */
+        .top-bar {
+            background-color: var(--secondary);
+            color: #cbd5e1;
+            padding: 8px 40px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar span {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: #f1f5f9;
+        }
+
+        .btn-renew {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-renew:hover {
+            background-color: #059669 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 70px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
+
+        .badge-pass {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Bus Pass Showcase Grid */
+        .grid-pass {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .pass-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border-top: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pass-header {
+            background-color: #f8fafc;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pass-header h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .pass-tag {
+            font-size: 0.75rem;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .pass-body {
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .candidate-photo {
+            width: 90px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid #cbd5e1;
+        }
+
+        .candidate-details {
+            font-size: 0.85rem;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .candidate-details strong {
+            color: var(--text-color);
+        }
+
+        .pass-footer {
+            background-color: #f8fafc;
+            padding: 15px 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .pass-price {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Renewal Information Section */
+        .renewal-section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 35px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .renewal-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .renewal-section h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .renewal-section p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .renewal-highlight {
+            background-color: #ecfdf5;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .renewal-highlight h4 {
+            font-size: 1rem;
+            color: #065f46;
+            margin-bottom: 8px;
+        }
+
+        .renewal-highlight ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: #047857;
+        }
+
+        .renewal-highlight ul li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div>SmartTransit Digital Pass System</div>
+        <div>Free Passes for Government School Students | <span>Monthly Auto-Renewal Available</span></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">
+            🚌 SmartTransit
+        </a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Student Pass</a>
+            <a href="#">Route Bus Pass</a>
+            <a href="#">Renewal Portal</a>
+            <a href="#">Support</a>
+            <a href="#" class="btn-renew">Renew Pass</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge-pass">Multi-Category Digital Transit Passes</div>
+        <h1>Seamless Commuting for Students & Professionals</h1>
+        <p>Manage your school, college, or working route bus passes with flexible monthly renewals, automated amount deductions, and secure verification.</p>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <h2 class="section-title">Digital Pass Samples</h2>
+
+        <!-- Pass Showcase Grid -->
+        <div class="grid-pass">
+            <!-- Student Bus Pass Example -->
+            <div class="pass-card">
+                <div class="pass-header">
+                    <h3>Student Concession Pass</h3>
+                    <span class="pass-tag">Govt School (Free)</span>
+                </div>
+                <div class="pass-body">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Candidate Photo" class="candidate-photo">
+                    <div class="candidate-details">
+                        <div><strong>Name:</strong> Ananya Sharma</div>
+                        <div><strong>DOB:</strong> 14 May 2008</div>
+                        <div><strong>Email:</strong> ananya.s@school.edu</div>
+                        <div><strong>Institution:</strong> Govt. Higher Sec. School</div>
+                        <div><strong>Validity:</strong> 01 Aug 2026 - 31 Aug 2026</div>
+                    </div>
+                </div>
+                <div class="pass-footer">
+                    <span>Monthly Renewal: Active</span>
+                    <span class="pass-price" style="color: #0369a1;">FREE</span>
+                </div>
+            </div>
+
+            <!-- Route Bus Pass (Working Organization) Example -->
+            <div class="pass-card" style="border-top-color: #10b981;">
+                <div class="pass-header">
+                    <h3>Route Bus Pass</h3>
+                    <span class="pass-tag" style="background-color: #d1fae5; color: #065f46;">Working Professional</span>
+                </div>
+                <div class="pass-body">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Candidate Photo" class="candidate-photo">
+                    <div class="candidate-details">
+                        <div><strong>Name:</strong> Rajesh Kumar</div>
+                        <div><strong>DOB:</strong> 22 Nov 1994</div>
+                        <div><strong>Email:</strong> rajesh.k@techcorp.com</div>
+                        <div><strong>Organization:</strong> TechCorp Solutions Ltd.</div>
+                        <div><strong>Validity:</strong> 01 Aug 2026 - 31 Aug 2026</div>
+                    </div>
+                </div>
+                <div class="pass-footer">
+                    <span>Monthly Renewal: Active</span>
+                    <span class="pass-price">$25.00 / Month</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Renewal Mechanism Section -->
+        <div class="renewal-section">
+            <div>
+                <h2>Flexible Monthly Renewal Process</h2>
+                <p>
+                    Our platform allows users to manage their passes according to their personal preference. The renewal process can be executed on a monthly basis with complete flexibility.
+                </p>
+                <p>
+                    Based on your selected renewal period, the corresponding amount is automatically calculated and deducted. Government school students continue to enjoy 100% free travel privileges with zero deduction upon renewal.
+                </p>
+            </div>
+            
+            <div class="renewal-highlight">
+                <h4>Renewal System Benefits</h4>
+                <ul>
+                    <li>✓ Monthly user-controlled renewal</li>
+                    <li>✓ Automatic fare deduction</li>
+                    <li>✓ Instant digital pass updates</li>
+                    <li>✓ Zero fees for eligible students</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
