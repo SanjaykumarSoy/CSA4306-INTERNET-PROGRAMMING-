@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Solid Waste Management Dashboard</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #ff9800;
+            --danger: #d32f2f;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        aside h2 {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+        }
+
+        aside nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        aside nav a:hover, aside nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .user-info {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .dashboard-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        /* Metric Cards */
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .card.warning { border-left-color: var(--accent); }
+        .card.danger { border-left-color: var(--danger); }
+
+        .card h3 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* Detailed Sections */
+        .content-section {
+            padding: 0 30px 30px 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+        }
+
+        .map-placeholder {
+            background-color: #e0e0e0;
+            height: 250px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-weight: 500;
+        }
+
+        ul.bin-status-list {
+            list-style: none;
+        }
+
+        ul.bin-status-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: white;
+        }
+        .badge.green { background-color: var(--secondary); }
+        .badge.orange { background-color: var(--accent); }
+        .badge.red { background-color: var(--danger); }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <h2>EcoRoute Admin</h2>
+        <nav>
+            <a href="#" class="active">Overview</a>
+            <a href="#">Segregation Data</a>
+            <a href="#">Route Optimization</a>
+            <a href="#">Workforce & Client</a>
+            <a href="#">Analytics Reports</a>
+        </nav>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main>
+        <header>
+            <h1>Solid Waste Management System</h1>
+            <div class="user-info">Logged in as: <strong>Admin</strong></div>
+        </header>
+
+        <!-- Metrics Overview Grid -->
+        <div class="dashboard-container">
+            <div class="card">
+                <h3>Total Active Dustbins</h3>
+                <div class="value">1,240</div>
+            </div>
+            <div class="card warning">
+                <h3>Bins Near Capacity (>80%)</h3>
+                <div class="value">142</div>
+            </div>
+            <div class="card">
+                <h3>Optimized Routes Active</h3>
+                <div class="value">18</div>
+            </div>
+            <div class="card danger">
+                <h3>Hazardous Segregation Alerts</h3>
+                <div class="value">5</div>
+            </div>
+        </div>
+
+        <!-- Detailed Sections -->
+        <div class="content-section">
+            <div class="panel">
+                <h2>Google Maps API & Route Optimization</h2>
+                <div class="map-placeholder">
+                    [ Google Maps API Route Simulation View ]
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>Bin Capacity & Segregation</h2>
+                <ul class="bin-status-list">
+                    <li>Bin #104 (Wet) <span class="badge red">92% Full</span></li>
+                    <li>Bin #105 (Dry) <span class="badge green">45% Full</span></li>
+                    <li>Bin #106 (Hazardous) <span class="badge orange">78% Full</span></li>
+                    <li>Bin #107 (Wet) <span class="badge green">20% Full</span></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
