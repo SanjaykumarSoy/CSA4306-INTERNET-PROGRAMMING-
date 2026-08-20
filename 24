@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Travels - Explore the World</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --secondary: #0369a1;
+            --accent: #f97316;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+        }
+
+        .btn-login {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Hero Search Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* Search Widget */
+        .search-widget {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            max-width: 850px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .search-field {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .search-field label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .search-field input, .search-field select {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            align-self: flex-end;
+            height: 41px;
+        }
+
+        .search-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        /* Grid Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .feature-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .feature-box h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .feature-box p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <a href="#" class="logo">Wanderlust Travels</a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Flights</a>
+            <a href="#">Hotels</a>
+            <a href="#">Car Rentals</a>
+            <a href="#">Packages</a>
+            <a href="#" class="btn-login">Login / Register</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section & Search Engine -->
+    <section class="hero">
+        <h1>Effortless Trip Planning & Booking</h1>
+        <p>Find the best deals on flights, hotels, and vacation packages tailored just for you.</p>
+        
+        <div class="search-widget">
+            <div class="search-field">
+                <label>Destination</label>
+                <input type="text" placeholder="Where are you going?">
+            </div>
+            <div class="search-field">
+                <label>Check-in / Date</label>
+                <input type="date">
+            </div>
+            <div class="search-field">
+                <label>Travelers</label>
+                <select>
+                    <option>1 Adult</option>
+                    <option>2 Adults</option>
+                    <option>Family (3+)</option>
+                </select>
+            </div>
+            <button class="search-btn">Search Deals</button>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h2 class="section-title">Popular Vacation Packages</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" alt="Beach Resort">
+                <div class="card-content">
+                    <h3>Tropical Maldives Getaway</h3>
+                    <p>Includes flights, 5-star beachfront hotel, and daily breakfast.</p>
+                    <div class="price">From $1,299</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80" alt="Paris Explorer">
+                <div class="card-content">
+                    <h3>Romantic Paris Explorer</h3>
+                    <p>Roundtrip flights, boutique hotel stay, and guided city tours.</p>
+                    <div class="price">From $949</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=500&q=80" alt="Dubai Adventure">
+                <div class="card-content">
+                    <h3>Luxury Dubai Holiday</h3>
+                    <p>Experience world-class shopping, desert safaris, and luxury lodging.</p>
+                    <div class="price">From $1,150</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Benefits -->
+        <div class="features">
+            <div class="feature-box">
+                <h4>Secure Payments</h4>
+                <p>Enjoy a hassle-free, fully encrypted checkout experience with instant booking confirmation.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Personalized Suggestions</h4>
+                <p>Receive tailor-made recommendations based on your preferences and previous trips.</p>
+            </div>
+            <div class="feature-box">
+                <h4>24/7 Customer Support</h4>
+                <p>Our dedicated team is ready to assist you with pre- and post-booking queries anytime.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
