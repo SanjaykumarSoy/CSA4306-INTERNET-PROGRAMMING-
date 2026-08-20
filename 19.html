@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetConnect - Veterinary Telemedicine Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #1a472a 0%, #2d6a4f 50%, #40916c 100%);
+        }
+        .gradient-footer {
+            background: linear-gradient(135deg, #0d1f14 0%, #1a472a 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(45, 106, 79, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #1a472a 0%, #2d6a4f 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(26, 71, 42, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-reviewing { background: #dbeafe; color: #1e40af; }
+        .status-responded { background: #d1fae5; color: #065f46; }
+        .status-closed { background: #e5e7eb; color: #4b5563; }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+        }
+        .notification-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .notification-error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .notification-info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .notification-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .request-card {
+            border-left: 4px solid #2d6a4f;
+            transition: all 0.3s ease;
+        }
+        .request-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+        }
+        .media-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .media-upload-area:hover {
+            border-color: #2d6a4f;
+            background: rgba(45, 106, 79, 0.05);
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            color: white;
+        }
+        .tab-inactive {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        .tab-inactive:hover {
+            background: #e5e7eb;
+        }
+        .disease-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        .disease-card:hover {
+            border-color: #2d6a4f;
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.1);
+        }
+        .subscription-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .subscription-active {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .analytics-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            padding: 16px 0;
+        }
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #2d6a4f, #40916c);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            min-height: 20px;
+            position: relative;
+        }
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+        .chart-label {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        .doctor-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .doctor-card:hover {
+            border-color: #2d6a4f;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(45, 106, 79, 0.12);
+        }
+        .doctor-card.selected {
+            border-color: #2d6a4f;
+            background: rgba(45, 106, 79, 0.05);
+            box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.15);
+        }
+        @media (max-width: 640px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .file-preview-item {
+            background: #f3f4f6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .payment-method {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .payment-method:hover {
+            border-color: #2d6a4f;
+        }
+        .payment-method.selected {
+            border-color: #2d6a4f;
+            background: rgba(45, 106, 79, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Main App -->
+    <div id="app" class="min-h-screen">
+        <!-- Header -->
+        <header class="gradient-header text-white shadow-lg sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-paw text-3xl"></i>
+                        <div>
+                            <h1 class="text-2xl font-bold tracking-tight">VetConnect</h1>
+                            <p class="text-xs opacity-80">Veterinary Telemedicine Platform</p>
+                        </div>
+                    </div>
+                    <div id="authButtons" class="flex items-center space-x-3">
+                        <button onclick="showLogin()" class="bg-white/20 hover:bg-white/30 px-6 py-2 rounded-full transition text-sm font-semibold">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </button>
+                        <button onclick="showRegister()" class="bg-white text-[#2d6a4f] hover:bg-gray-100 px-6 py-2 rounded-full transition text-sm font-semibold">
+                            <i class="fas fa-user-plus mr-2"></i>Register
+                        </button>
+                    </div>
+                    <div id="userInfo" class="hidden items-center space-x-4">
+                        <span id="userNameDisplay" class="font-semibold"></span>
+                        <span id="subscriptionBadge" class="subscription-badge subscription-active text-xs">Govt. CVH</span>
+                        <button onclick="logout()" class="bg-red-500/20 hover:bg-red-500/30 px-4 py-2 rounded-full transition text-sm">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-8">
+            <!-- Auth Forms -->
+            <div id="loginForm" class="max-w-md mx-auto glass-card p-8 hidden fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Welcome Back, Farmer</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email / Username</label>
+                        <input type="text" id="loginUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-gray-600">
+                    New farmer? <button onclick="showRegister()" class="text-[#2d6a4f] font-semibold hover:underline">Register Now</button>
+                </p>
+            </div>
+
+            <div id="registerForm" class="max-w-md mx-auto glass-card p-8 hidden fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Farmer Registration</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="regName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="regEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <input type="tel" id="regPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Farm Location</label>
+                        <input type="text" id="regLocation" placeholder="City, District" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Subscription Type</label>
+                        <select id="regSubscription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                            <option value="govt">Government CVH (Free)</option>
+                            <option value="private">Private Clinic (Paid - $19.99/month)</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="regPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                    </div>
+                    <button type="submit" class="w-full btn-secondary text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-user-plus mr-2"></i>Register
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-gray-600">
+                    Already registered? <button onclick="showLogin()" class="text-[#2d6a4f] font-semibold hover:underline">Login</button>
+                </p>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="hidden fade-in">
+                <!-- Subscription Status Banner -->
+                <div class="glass-card p-4 mb-6">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-certificate text-2xl text-[#2d6a4f]"></i>
+                            <div>
+                                <p class="text-sm text-gray-500">Subscription Status</p>
+                                <p id="subscriptionStatus" class="font-bold text-[#2d6a4f]">Govt. CVH (Free)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="status-badge status-responded flex items-center">
+                                <span class="live-dot mr-2"></span> Active
+                            </span>
+                            <button onclick="showSubscriptionModal()" class="btn-primary text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                <i class="fas fa-credit-card mr-2"></i>Upgrade
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="glass-card p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Total Requests</p>
+                                <p id="totalRequests" class="text-2xl font-bold text-gray-800">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-[#2d6a4f]/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-file-medical text-[#2d6a4f] text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Pending</p>
+                                <p id="pendingCount" class="text-2xl font-bold text-yellow-600">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Responded</p>
+                                <p id="respondedCount" class="text-2xl font-bold text-emerald-600">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check-circle text-emerald-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Doctors</p>
+                                <p id="doctorCount" class="text-2xl font-bold text-blue-600">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-md text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: New Request Form -->
+                    <div class="lg:col-span-2">
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-plus-circle text-[#2d6a4f] mr-2"></i>New Consultation Request
+                            </h3>
+                            <form onsubmit="handleSubmitRequest(event)">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Animal Type</label>
+                                    <select id="animalType" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                                        <option value="">Select animal type...</option>
+                                        <option value="cattle">Cattle</option>
+                                        <option value="sheep">Sheep</option>
+                                        <option value="goat">Goat</option>
+                                        <option value="chicken">Chicken</option>
+                                        <option value="duck">Duck</option>
+                                        <option value="pig">Pig</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Symptoms / Signs</label>
+                                    <textarea id="symptoms" rows="3" required placeholder="Describe the symptoms your animal is showing..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload Media (Video, Audio, Images)</label>
+                                    <div class="media-upload-area" onclick="document.getElementById('mediaInput').click()">
+                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                        <p class="text-sm text-gray-600">Click to upload or drag & drop</p>
+                                        <p class="text-xs text-gray-400">Supports: Images, Audio, Video (Max 10MB each)</p>
+                                        <input type="file" id="mediaInput" multiple accept="image/*,audio/*,video/*" class="hidden" onchange="handleMediaUpload(event)">
+                                    </div>
+                                    <div id="mediaPreview" class="file-preview"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Select Doctor</label>
+                                    <select id="doctorSelect" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent outline-none transition">
+                                        <option value="">Select a doctor...</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                                    <i class="fas fa-paper-plane mr-2"></i>Send Request
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Request History -->
+                        <div class="mt-6 glass-card p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold text-gray-800">
+                                    <i class="fas fa-history text-[#2d6a4f] mr-2"></i>My Requests
+                                </h3>
+                                <div class="flex space-x-2">
+                                    <button onclick="filterRequests('all')" class="tab-active px-3 py-1 rounded-full text-xs font-semibold" id="reqFilterAll">All</button>
+                                    <button onclick="filterRequests('pending')" class="tab-inactive px-3 py-1 rounded-full text-xs font-semibold" id="reqFilterPending">Pending</button>
+                                    <button onclick="filterRequests('responded')" class="tab-inactive px-3 py-1 rounded-full text-xs font-semibold" id="reqFilterResponded">Responded</button>
+                                </div>
+                            </div>
+                            <div id="requestList" class="space-y-3 max-h-96 overflow-y-auto">
+                                <p class="text-gray-400 text-sm text-center py-8">No requests yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- Disease Analytics -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-chart-bar text-[#2d6a4f] mr-2"></i>Disease Analytics
+                            </h3>
+                            <p class="text-xs text-gray-500 mb-3">Most common diseases in your area</p>
+                            <div id="diseaseAnalytics">
+                                <div class="analytics-chart" id="diseaseChart"></div>
+                                <div id="diseaseLegend" class="mt-2"></div>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-400">
+                                <i class="fas fa-database mr-1"></i> Based on recorded data from your area
+                            </div>
+                        </div>
+
+                        <!-- Common Diseases Reference -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-book-medical text-[#2d6a4f] mr-2"></i>Common Diseases Reference
+                            </h3>
+                            <div id="diseaseReference" class="space-y-3 max-h-60 overflow-y-auto"></div>
+                        </div>
+
+                        <!-- Available Doctors -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-user-md text-[#2d6a4f] mr-2"></i>Available Doctors
+                            </h3>
+                            <div id="doctorList" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-crown text-yellow-500 mr-2"></i>Upgrade Subscription
+                </h2>
+                <button onclick="closeSubscriptionModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <h4 class="font-bold text-gray-800">Current: Govt. CVH (Free)</h4>
+                    <p class="text-sm text-gray-600">Access to government veterinary hospitals</p>
+                </div>
+                <div class="border-2 border-[#2d6a4f] p-4 rounded-xl bg-[#2d6a4f]/5">
+                    <h4 class="font-bold text-[#2d6a4f]">Private Clinic Subscription</h4>
+                    <p class="text-sm text-gray-600 mb-2">$19.99/month • Access to private veterinarians</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li><i class="fas fa-check text-emerald-500 mr-2"></i>24/7 Emergency consultations</li>
+                        <li><i class="fas fa-check text-emerald-500 mr-2"></i>Specialist referrals</li>
+                        <li><i class="fas fa-check text-emerald-500 mr-2"></i>Priority response time</li>
+                    </ul>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select Payment Method</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="payment-method" onclick="selectPayment('bank')">
+                            <i class="fas fa-university text-2xl text-blue-600 block mb-1"></i>
+                            <span class="text-sm font-semibold">Bank Transfer</span>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('easypaisa')">
+                            <i class="fas fa-mobile-alt text-2xl text-green-600 block mb-1"></i>
+                            <span class="text-sm font-semibold">EasyPaisa</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="upgradeSubscription()" class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                    <i class="fas fa-credit-card mr-2"></i>Subscribe Now - $19.99/month
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Detail Modal -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-4">
+                <h2 id="requestModalTitle" class="text-xl font-bold text-gray-800">Request Details</h2>
+                <button onclick="closeRequestModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div id="requestModalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- Data Store ---
+        let currentUser = null;
+        let selectedPayment = null;
+        let uploadedFiles = [];
+        let currentRequestFilter = 'all';
+        
+        // --- Sample Data ---
+        const doctors = [
+            { id: 'd1', name: 'Dr. Muhammad Ali', specialization: 'Large Animals', clinic: 'Govt. CVH Lahore', type: 'govt', bank: 'HBL: 1234-5678-9012', easypaisa: '03XX-XXXXXXX' },
+            { id: 'd2', name: 'Dr. Fatima Khan', specialization: 'Poultry', clinic: 'Private Vet Clinic', type: 'private', bank: 'UBL: 2345-6789-0123', easypaisa: '03XX-XXXXXXX' },
+            { id: 'd3', name: 'Dr. Ahmed Raza', specialization: 'Small Ruminants', clinic: 'Govt. CVH Multan', type: 'govt', bank: 'MCB: 3456-7890-1234', easypaisa: '03XX-XXXXXXX' },
+            { id: 'd4', name: 'Dr. Sara Ahmed', specialization: 'Cattle & Buffalo', clinic: 'City Vet Hospital', type: 'private', bank: 'ABL: 4567-8901-2345', easypaisa: '03XX-XXXXXXX' }
+        ];
+
+        const diseases = [
+            { name: 'Foot and Mouth Disease', animal: 'cattle', symptoms: 'Fever, blisters in mouth/feet', image: '🐄', prescription: 'Antivirals, rest, isolation' },
+            { name: 'Newcastle Disease', animal: 'chicken', symptoms: 'Respiratory distress, diarrhea', image: '🐔', prescription: 'Vaccination, antibiotics' },
+            { name: 'Peste des Petits Ruminants', animal: 'goat', symptoms: 'Fever, mouth ulcers, diarrhea', image: '🐐', prescription: 'Supportive care, fluids' },
+            { name: 'Mastitis', animal: 'cattle', symptoms: 'Swollen udder, milk changes', image: '🐄', prescription: 'Antibiotics, anti-inflammatory' },
+            { name: 'Coccidiosis', animal: 'chicken', symptoms: 'Bloody diarrhea, weight loss', image: '🐔', prescription: 'Anticoccidials, sanitation' }
+        ];
+
+        // --- Sample disease analytics data ---
+        const diseaseStats = {
+            'Lahore': { 'Foot and Mouth Disease': 45, 'Newcastle Disease': 30, 'Mastitis': 25, 'PPR': 15, 'Coccidiosis': 20 },
+            'Multan': { 'Foot and Mouth Disease': 35, 'Newcastle Disease': 40, 'Mastitis': 20, 'PPR': 25, 'Coccidiosis': 15 },
+            'Karachi': { 'Foot and Mouth Disease': 20, 'Newcastle Disease': 25, 'Mastitis': 35, 'PPR': 10, 'Coccidiosis': 30 }
+        };
+
+        let users = JSON.parse(localStorage.getItem('vetconnect_users')) || {};
+        let requests = JSON.parse(localStorage.getItem('vetconnect_requests')) || {};
+        let subscriptions = JSON.parse(localStorage.getItem('vetconnect_subscriptions')) || {};
+
+        // --- Utility Functions ---
+        function saveUsers() {
+            localStorage.setItem('vetconnect_users', JSON.stringify(users));
+        }
+
+        function saveRequests() {
+            localStorage.setItem('vetconnect_requests', JSON.stringify(requests));
+        }
+
+        function saveSubscriptions() {
+            localStorage.setItem('vetconnect_subscriptions', JSON.stringify(subscriptions));
+        }
+
+        function generateId() {
+            return 'REQ-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+        }
+
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            const div = document.createElement('div');
+            div.className = `notification notification-${type} slide-in`;
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            div.innerHTML = `<i class="fas ${icons[type] || icons.info} mr-3"></i>${message}`;
+            container.appendChild(div);
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transform = 'translateX(100%)';
+                setTimeout(() => div.remove(), 300);
+            }, 4000);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getStatusBadge(status) {
+            const map = {
+                'pending': 'status-pending',
+                'reviewing': 'status-reviewing',
+                'responded': 'status-responded',
+                'closed': 'status-closed'
+            };
+            const labels = {
+                'pending': 'Pending',
+                'reviewing': 'Reviewing',
+                'responded': 'Responded',
+                'closed': 'Closed'
+            };
+            return `<span class="status-badge ${map[status] || 'status-pending'}">${labels[status] || status}</span>`;
+        }
+
+        // --- Authentication ---
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const location = document.getElementById('regLocation').value.trim();
+            const subscription = document.getElementById('regSubscription').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (users[email]) {
+                showNotification('Email already registered!', 'error');
+                return;
+            }
+
+            users[email] = {
+                name, email, phone, location, password,
+                subscription: subscription,
+                registered: new Date().toISOString()
+            };
+            saveUsers();
+            requests[email] = [];
+
+            if (subscription === 'private') {
+                subscriptions[email] = {
+                    type: 'private',
+                    startDate: new Date().toISOString(),
+                    status: 'active'
+                };
+                saveSubscriptions();
+            }
+
+            showNotification('Registration successful! Please login.', 'success');
+            showLogin();
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regLocation').value = '';
+            document.getElementById('regPassword').value = '';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!users[username] || users[username].password !== password) {
+                showNotification('Invalid credentials!', 'error');
+                return;
+            }
+
+            currentUser = username;
+            sessionStorage.setItem('vetconnect_session', currentUser);
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userNameDisplay').textContent = users[currentUser].name;
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            updateSubscriptionDisplay();
+            updateDashboard();
+            showNotification(`Welcome, ${users[currentUser].name}!`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            sessionStorage.removeItem('vetconnect_session');
+            document.getElementById('authButtons').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            showLogin();
+            showNotification('Logged out', 'info');
+        }
+
+        // --- Subscription ---
+        function updateSubscriptionDisplay() {
+            if (!currentUser) return;
+            const user = users[currentUser];
+            const badge = document.getElementById('subscriptionBadge');
+            const statusText = document.getElementById('subscriptionStatus');
+            
+            if (user.subscription === 'private') {
+                badge.textContent = 'Private Clinic';
+                badge.className = 'subscription-badge text-xs';
+                statusText.textContent = 'Private Clinic (Active)';
+                statusText.className = 'font-bold text-[#f59e0b]';
+            } else {
+                badge.textContent = 'Govt. CVH';
+                badge.className = 'subscription-badge subscription-active text-xs';
+                statusText.textContent = 'Govt. CVH (Free)';
+                statusText.className = 'font-bold text-[#2d6a4f]';
+            }
+        }
+
+        function showSubscriptionModal() {
+            document.getElementById('subscriptionModal').classList.add('active');
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscriptionModal').classList.remove('active');
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            event.target.closest('.payment-method').classList.add('selected');
+        }
+
+        function upgradeSubscription() {
+            if (!selectedPayment) {
+                showNotification('Please select a payment method', 'warning');
+                return;
+            }
+            if (!currentUser) {
+                showNotification('Please login first', 'error');
+                return;
+            }
+
+            users[currentUser].subscription = 'private';
+            subscriptions[currentUser] = {
+                type: 'private',
+                startDate: new Date().toISOString(),
+                status: 'active',
+                paymentMethod: selectedPayment
+            };
+            saveUsers();
+            saveSubscriptions();
+            updateSubscriptionDisplay();
+            closeSubscriptionModal();
+            showNotification('🎉 Subscription upgraded to Private Clinic!', 'success');
+            updateDashboard();
+        }
+
+        // --- Media Upload ---
+        function handleMediaUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('mediaPreview');
+            
+            for (let file of files) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showNotification(`File ${file.name} exceeds 10MB limit`, 'error');
+                    continue;
+                }
+                uploadedFiles.push(file);
+                const icon = file.type.startsWith('image/') ? 'fa-image' : 
+                            file.type.startsWith('audio/') ? 'fa-music' : 'fa-video';
+                const div = document.createElement('div');
+                div.className = 'file-preview-item';
+                div.innerHTML = `
+                    <i class="fas ${icon}"></i>
+                    <span>${file.name}</span>
+                    <button onclick="this.parentElement.remove(); uploadedFiles = uploadedFiles.filter(f => f.name !== '${file.name}')" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                preview.appendChild(div);
+            }
+            event.target.value = '';
+        }
+
+        // --- Submit Request ---
+        function handleSubmitRequest(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                showNotification('Please login first!', 'error');
+                return;
+            }
+
+            const animalType = document.getElementById('animalType').value;
+            const symptoms = document.getElementById('symptoms').value.trim();
+            const doctorId = document.getElementById('doctorSelect').value;
+
+            if (!animalType || !symptoms || !doctorId) {
+                showNotification('Please fill in all required fields!', 'warning');
+                return;
+            }
+
+            const doctor = doctors.find(d => d.id === doctorId);
+            if (!doctor) {
+                showNotification('Please select a valid doctor', 'error');
+                return;
+            }
+
+            // Check subscription for private doctors
+            if (doctor.type === 'private' && users[currentUser].subscription !== 'private') {
+                showNotification('⚠️ This is a private clinic. Please upgrade your subscription first!', 'warning');
+                return;
+            }
+
+            const request = {
+                id: generateId(),
+                animalType: animalType,
+                symptoms: symptoms,
+                doctorId: doctorId,
+                doctorName: doctor.name,
+                clinic: doctor.clinic,
+                status: 'pending',
+                created: new Date().toISOString(),
+                files: uploadedFiles.map(f => f.name),
+                responses: [],
+                mediaTypes: uploadedFiles.map(f => f.type)
+            };
+
+            requests[currentUser].unshift(request);
+            saveRequests();
+            uploadedFiles = [];
+            document.getElementById('mediaPreview').innerHTML = '';
+            document.getElementById('animalType').value = '';
+            document.getElementById('symptoms').value = '';
+            document.getElementById('doctorSelect').value = '';
+
+            showNotification(`✅ Request sent to ${doctor.name}!`, 'success');
+            updateDashboard();
+        }
+
+        // --- Dashboard Updates ---
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            const userRequests = requests[currentUser] || [];
+            
+            // Update stats
+            document.getElementById('totalRequests').textContent = userRequests.length;
+            document.getElementById('pendingCount').textContent = userRequests.filter(r => r.status === 'pending' || r.status === 'reviewing').length;
+            document.getElementById('respondedCount').textContent = userRequests.filter(r => r.status === 'responded').length;
+            document.getElementById('doctorCount').textContent = doctors.length;
+
+            // Update doctor dropdown
+            populateDoctors();
+            
+            // Update request list
+            renderRequests(currentRequestFilter);
+            
+            // Update disease analytics
+            renderDiseaseAnalytics();
+            
+            // Update disease reference
+            renderDiseaseReference();
+            
+            // Update doctor list
+            renderDoctorList();
+        }
+
+        function populateDoctors() {
+            const select = document.getElementById('doctorSelect');
+            const isPrivate = users[currentUser]?.subscription === 'private';
+            
+            let available = doctors;
+            if (!isPrivate) {
+                available = doctors.filter(d => d.type === 'govt');
+            }
+            
+            select.innerHTML = '<option value="">Select a doctor...</option>' + 
+                available.map(d => `
+                    <option value="${d.id}">${d.name} - ${d.specialization} (${d.clinic})</option>
+                `).join('');
+        }
+
+        function renderRequests(filter) {
+            const list = document.getElementById('requestList');
+            const userRequests = requests[currentUser] || [];
+            
+            let filtered = userRequests;
+            if (filter !== 'all') {
+                filtered = userRequests.filter(r => r.status === filter);
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">No requests found</p>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(r => `
+                <div class="request-card glass-card p-4 cursor-pointer" onclick="viewRequest('${r.id}')">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-xs font-medium text-gray-500">#${r.id}</span>
+                                ${getStatusBadge(r.status)}
+                            </div>
+                            <h4 class="font-semibold text-gray-800">${r.animalType} - ${r.symptoms.substring(0, 50)}${r.symptoms.length > 50 ? '...' : ''}</h4>
+                            <div class="flex items-center space-x-4 mt-1 text-xs text-gray-500">
+                                <span><i class="far fa-calendar mr-1"></i>${formatDate(r.created)}</span>
+                                <span><i class="fas fa-user-md mr-1"></i>${r.doctorName}</span>
+                                ${r.files.length > 0 ? `<span><i class="fas fa-paperclip mr-1"></i>${r.files.length} file(s)</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            ${r.status === 'responded' ? '<i class="fas fa-check-circle text-emerald-500 text-xl"></i>' : ''}
+                            ${r.status === 'pending' ? '<i class="fas fa-clock text-yellow-500 text-xl"></i>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterRequests(filter) {
+            currentRequestFilter = filter;
+            document.querySelectorAll('[id^="reqFilter"]').forEach(el => {
+                el.className = 'px-3 py-1 rounded-full text-xs font-semibold tab-inactive';
+            });
+            const map = { 'all': 'reqFilterAll', 'pending': 'reqFilterPending', 'responded': 'reqFilterResponded' };
+            const active = document.getElementById(map[filter]);
+            if (active) active.className = 'px-3 py-1 rounded-full text-xs font-semibold tab-active';
+            renderRequests(filter);
+        }
+
+        // --- View Request ---
+        function viewRequest(requestId) {
+            const request = requests[currentUser].find(r => r.id === requestId);
+            if (!request) return;
+
+            document.getElementById('requestModalTitle').textContent = `Request #${request.id}`;
+            document.getElementById('requestModalBody').innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-500">Status</span>
+                        ${getStatusBadge(request.status)}
+                    </div>
+                    <div>
+                        <span class="text-sm font-medium text-gray-500">Animal</span>
+                        <p class="text-gray-800 font-semibold">${request.animalType}</p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-medium text-gray-500">Symptoms</span>
+                        <p class="text-gray-700 bg-gray-50 p-3 rounded-xl">${request.symptoms}</p>
+                    </div>
+                    <div>
+                        <span class="text-sm font-medium text-gray-500">Doctor</span>
+                        <p class="text-gray-800">${request.doctorName} (${request.clinic})</p>
+                    </div>
+                    ${request.files.length > 0 ? `
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Attached Files</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                ${request.files.map(f => `
+                                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs">
+                                        <i class="fas fa-file mr-1"></i>${f}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${request.responses.length > 0 ? `
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Doctor's Response</span>
+                            ${request.responses.map(r => `
+                                <div class="bg-emerald-50 p-3 rounded-xl mt-2">
+                                    <p class="text-sm text-gray-700">${r.message}</p>
+                                    <p class="text-xs text-gray-400 mt-1">${formatDate(r.timestamp)}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="bg-yellow-50 p-3 rounded-xl text-center">
+                            <p class="text-sm text-yellow-700">⏳ Waiting for doctor's response...</p>
+                        </div>
+                    `}
+                    <div class="flex space-x-3">
+                        <button onclick="addResponse('${request.id}')" class="flex-1 btn-primary text-white py-2 rounded-xl font-semibold text-sm">
+                            <i class="fas fa-reply mr-2"></i>Add Follow-up
+                        </button>
+                        <button onclick="closeRequestModal()" class="flex-1 bg-gray-200 text-gray-700 hover:bg-gray-300 py-2 rounded-xl font-semibold text-sm">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('requestModal').classList.add('active');
+        }
+
+        function addResponse(requestId) {
+            const message = prompt('Enter your follow-up message or additional information:');
+            if (message && message.trim()) {
+                const request = requests[currentUser].find(r => r.id === requestId);
+                if (request) {
+                    request.responses.push({
+                        message: message.trim(),
+                        timestamp: new Date().toISOString(),
+                        from: 'farmer'
+                    });
+                    saveRequests();
+                    viewRequest(requestId);
+                    showNotification('Follow-up added successfully!', 'success');
+                }
+            }
+        }
+
+        function closeRequestModal() {
+            document.getElementById('requestModal').classList.remove('active');
+        }
+
+        // --- Disease Analytics ---
+        function renderDiseaseAnalytics() {
+            const chart = document.getElementById('diseaseChart');
+            const legend = document.getElementById('diseaseLegend');
+            
+            // Get user location or default
+            const location = users[currentUser]?.location || 'Lahore';
+            const stats = diseaseStats[location] || diseaseStats['Lahore'];
+            
+            const diseases = Object.keys(stats);
+            const values = Object.values(stats);
+            const maxVal = Math.max(...values);
+
+            chart.innerHTML = diseases.map((d, i) => {
+                const height = ((values[i] / maxVal) * 150) + 20;
+                return `
+                    <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                        <div class="chart-bar" style="height: ${height}px; width: 100%;"></div>
+                        <div class="chart-label">${d.substring(0, 4)}</div>
+                        <div class="chart-label font-bold text-xs">${values[i]}</div>
+                    </div>
+                `;
+            }).join('');
+
+            legend.innerHTML = diseases.map((d, i) => `
+                <span class="inline-flex items-center mr-3 text-xs">
+                    <span class="w-3 h-3 rounded-full bg-[#2d6a4f] mr-1" style="opacity: ${0.3 + (i * 0.15)}"></span>
+                    ${d}
+                </span>
+            `).join('');
+        }
+
+        // --- Disease Reference ---
+        function renderDiseaseReference() {
+            const container = document.getElementById('diseaseReference');
+            container.innerHTML = diseases.map(d => `
+                <div class="disease-card">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-3xl">${d.image}</span>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-semibold text-gray-800">${d.name}</h4>
+                                <span class="text-xs text-gray-400">${d.animal}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mt-1">Symptoms: ${d.symptoms}</p>
+                            <p class="text-xs text-emerald-600 mt-1">💊 ${d.prescription}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- Doctor List ---
+        function renderDoctorList() {
+            const container = document.getElementById('doctorList');
+            const isPrivate = users[currentUser]?.subscription === 'private';
+            
+            let available = doctors;
+            if (!isPrivate) {
+                available = doctors.filter(d => d.type === 'govt');
+            }
+
+            container.innerHTML = available.map(d => `
+                <div class="doctor-card p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-800 text-sm">${d.name}</h4>
+                            <p class="text-xs text-gray-500">${d.specialization}</p>
+                            <p class="text-xs text-gray-400">${d.clinic}</p>
+                        </div>
+                        <span class="status-badge ${d.type === 'govt' ? 'status-responded' : 'status-pending'} text-xs">
+                            ${d.type === 'govt' ? 'Govt. CVH' : 'Private'}
+                        </span>
+                    </div>
+                    ${d.type === 'private' && !isPrivate ? `
+                        <div class="mt-2 text-xs text-yellow-600">
+                            <i class="fas fa-lock mr-1"></i> Requires subscription
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // --- Simulate Doctor Response ---
+        function simulateDoctorResponse() {
+            if (!currentUser) return;
+            
+            const userRequests = requests[currentUser] || [];
+            const pending = userRequests.filter(r => r.status === 'pending' && Math.random() > 0.7);
+            
+            pending.forEach(r => {
+                r.status = 'responded';
+                r.responses.push({
+                    message: `Thank you for your request. Based on the symptoms of ${r.animalType}, I recommend the following: ${['Rest and isolation', 'Antibiotics course', 'Anti-inflammatory medication', 'Fluid therapy', 'Nutritional supplements'][Math.floor(Math.random() * 5)]}. Please monitor the animal and provide updates.`,
+                    timestamp: new Date().toISOString(),
+                    from: 'doctor'
+                });
+            });
+            
+            if (pending.length > 0) {
+                saveRequests();
+                updateDashboard();
+                showNotification(`📩 ${pending.length} request(s) received responses from doctors!`, 'success');
+            }
+        }
+
+        // --- Init ---
+        function init() {
+            const savedSession = sessionStorage.getItem('vetconnect_session');
+            if (savedSession && users[savedSession]) {
+                currentUser = savedSession;
+                document.getElementById('authButtons').classList.add('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userNameDisplay').textContent = users[currentUser].name;
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                updateSubscriptionDisplay();
+                updateDashboard();
+            } else {
+                showLogin();
+            }
+            
+            // Simulate doctor responses every 30 seconds
+            setInterval(simulateDoctorResponse, 30000);
+        }
+
+        // Close modals on outside click
+        document.getElementById('subscriptionModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSubscriptionModal();
+        });
+        document.getElementById('requestModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRequestModal();
+        });
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', init);
+
+        console.log('🐾 VetConnect Loaded - Veterinary Telemedicine Platform');
+        console.log('👨‍⚕️ ' + doctors.length + ' doctors available');
+        console.log('📋 ' + Object.keys(users).length + ' farmers registered');
+        console.log('💊 Disease analytics active for ' + Object.keys(diseaseStats).length + ' regions');
+    </script>
+</body>
+</html>

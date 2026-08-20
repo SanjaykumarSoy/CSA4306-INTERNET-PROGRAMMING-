@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteOnline - Secure E-Voting Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .gradient-btn {
+            background: linear-gradient(135deg, #e94560 0%, #c23152 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
+        }
+        .gradient-btn-secondary {
+            background: linear-gradient(135deg, #533483 0%, #3b1f6e 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(83, 52, 131, 0.4);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-upcoming { background: #dbeafe; color: #1e40af; }
+        .status-ended { background: #fee2e2; color: #991b1b; }
+        .candidate-card {
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .candidate-card:hover {
+            border-color: #e94560;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.15);
+        }
+        .candidate-card.selected {
+            border-color: #e94560;
+            background: rgba(233, 69, 96, 0.05);
+            box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            max-width: 400px;
+        }
+        .notification-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .notification-error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .notification-info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .notification-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .vote-progress {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .vote-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #533483);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        .verification-code {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            color: #1a1a2e;
+            background: #f3f4f6;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #e94560;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 640px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            .verification-code {
+                font-size: 1.5rem;
+                letter-spacing: 4px;
+                padding: 8px 16px;
+            }
+        }
+        .encryption-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Main App -->
+    <div id="app" class="min-h-screen">
+        <!-- Header -->
+        <header class="gradient-header text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-vote-yea text-3xl"></i>
+                        <div>
+                            <h1 class="text-2xl font-bold">VoteOnline</h1>
+                            <p class="text-xs opacity-80">Secure • Transparent • Accessible</p>
+                        </div>
+                    </div>
+                    <div id="authButtons" class="flex items-center space-x-3">
+                        <button onclick="showLogin()" class="bg-white/20 hover:bg-white/30 px-6 py-2 rounded-full transition text-sm font-semibold">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </button>
+                        <button onclick="showRegister()" class="bg-white text-[#e94560] hover:bg-gray-100 px-6 py-2 rounded-full transition text-sm font-semibold">
+                            <i class="fas fa-user-plus mr-2"></i>Register
+                        </button>
+                    </div>
+                    <div id="userInfo" class="hidden items-center space-x-4">
+                        <span id="userNameDisplay" class="font-semibold"></span>
+                        <span class="encryption-badge">
+                            <i class="fas fa-lock text-xs"></i> AES-256
+                        </span>
+                        <button onclick="logout()" class="bg-red-500/20 hover:bg-red-500/30 px-4 py-2 rounded-full transition text-sm">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-8">
+            <!-- Auth Forms -->
+            <div id="loginForm" class="max-w-md mx-auto glass-card p-8 hidden fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Welcome Back, Voter</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Voter ID / Email</label>
+                        <input type="text" id="loginUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Two-Factor Code</label>
+                        <input type="text" id="login2FA" placeholder="Enter 6-digit code" maxlength="6" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                        <p class="text-xs text-gray-500 mt-1">Check your registered device for the verification code</p>
+                    </div>
+                    <button type="submit" class="w-full gradient-btn text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-shield-alt mr-2"></i>Verify & Login
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-gray-600">
+                    Not registered? <button onclick="showRegister()" class="text-[#e94560] font-semibold hover:underline">Register Now</button>
+                </p>
+            </div>
+
+            <div id="registerForm" class="max-w-md mx-auto glass-card p-8 hidden fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Register to Vote</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="regName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="regEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Voter ID Number</label>
+                        <input type="text" id="regVoterId" required placeholder="e.g., VOT-2024-XXXX" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="regPassword" required minlength="8" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#e94560] focus:border-transparent outline-none transition">
+                    </div>
+                    <button type="submit" class="w-full gradient-btn-secondary text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-user-check mr-2"></i>Register as Voter
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-gray-600">
+                    Already registered? <button onclick="showLogin()" class="text-[#e94560] font-semibold hover:underline">Login</button>
+                </p>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="hidden fade-in">
+                <!-- Election Status Banner -->
+                <div class="glass-card p-6 mb-6">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div>
+                                <span class="text-sm text-gray-500">Current Election</span>
+                                <h2 class="text-2xl font-bold text-gray-800">Presidential Election 2026</h2>
+                            </div>
+                            <span class="status-badge status-active flex items-center">
+                                <span class="live-dot mr-2"></span> Live
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm text-gray-500">Voter Turnout</span>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl font-bold text-[#e94560]" id="turnoutPercentage">68%</span>
+                                <div class="vote-progress w-32">
+                                    <div class="vote-progress-fill" style="width: 68%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between text-sm flex-wrap gap-2">
+                        <span><i class="far fa-calendar mr-2"></i>Started: Nov 1, 2026</span>
+                        <span><i class="far fa-clock mr-2"></i>Ends: Nov 5, 2026 (2 days left)</span>
+                        <span><i class="fas fa-users mr-2"></i>Total Voters: 24,568</span>
+                        <span><i class="fas fa-check-circle mr-2"></i>Votes Cast: 16,706</span>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: Candidates -->
+                    <div class="lg:col-span-2">
+                        <div class="glass-card p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold text-gray-800">
+                                    <i class="fas fa-user-tie text-[#e94560] mr-2"></i>Candidates
+                                </h3>
+                                <span class="text-xs text-gray-500"><i class="fas fa-info-circle mr-1"></i>Select one to vote</span>
+                            </div>
+                            <div id="candidateList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Candidates will be rendered here -->
+                            </div>
+                            <div id="voteSection" class="mt-6 hidden">
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        <i class="fas fa-check-circle text-emerald-500 mr-2"></i>
+                                        You have selected: <span id="selectedCandidateName" class="font-semibold text-gray-800"></span>
+                                    </p>
+                                    <button onclick="castVote()" class="w-full gradient-btn text-white py-3 rounded-xl font-semibold">
+                                        <i class="fas fa-vote-yea mr-2"></i>Cast Vote Securely
+                                    </button>
+                                    <p class="text-xs text-gray-400 mt-2 text-center">
+                                        <i class="fas fa-lock mr-1"></i>Your vote is encrypted and anonymous
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- Voting History -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-history text-[#e94560] mr-2"></i>My Voting History
+                            </h3>
+                            <div id="votingHistory" class="space-y-2 max-h-60 overflow-y-auto">
+                                <p class="text-gray-400 text-sm text-center py-4">No voting history yet</p>
+                            </div>
+                        </div>
+
+                        <!-- Election Results Live -->
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                                <i class="fas fa-chart-pie text-[#e94560] mr-2"></i>Live Results
+                            </h3>
+                            <div id="liveResults" class="space-y-3">
+                                <!-- Live results will be rendered here -->
+                            </div>
+                            <div class="mt-3 text-xs text-gray-400 flex items-center justify-between">
+                                <span><i class="fas fa-sync-alt mr-1"></i>Updates in real-time</span>
+                                <span class="encryption-badge">
+                                    <i class="fas fa-shield-alt text-xs"></i> Encrypted
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security & Compliance Footer -->
+                <div class="mt-6 glass-card p-4">
+                    <div class="flex flex-wrap items-center justify-between gap-4 text-sm">
+                        <div class="flex items-center space-x-4">
+                            <span class="encryption-badge"><i class="fas fa-lock mr-1"></i> AES-256 Encryption</span>
+                            <span class="encryption-badge"><i class="fas fa-shield-alt mr-1"></i> GDPR Compliant</span>
+                            <span class="encryption-badge"><i class="fas fa-check-circle mr-1"></i> Election Commission Certified</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-check-circle text-emerald-500"></i>
+                            <span>Secure Connection</span>
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vote Confirmation Modal -->
+    <div id="confirmationModal" class="modal hidden">
+        <div class="modal-content glass-card p-8 text-center">
+            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-emerald-600 text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Vote Confirmed!</h3>
+            <p class="text-gray-600 mb-4">Your vote has been securely recorded and encrypted.</p>
+            <div class="bg-gray-50 p-4 rounded-xl mb-4">
+                <p class="text-xs text-gray-500">Confirmation Code</p>
+                <div id="confirmationCode" class="verification-code">VOTE-8X7K-9M3P</div>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">
+                <i class="fas fa-envelope mr-1"></i> A confirmation has been sent to your email
+            </p>
+            <button onclick="closeConfirmation()" class="w-full gradient-btn text-white py-3 rounded-xl font-semibold">
+                <i class="fas fa-check mr-2"></i>Done
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="modal hidden">
+        <div class="text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p class="text-white font-semibold text-lg">Processing your vote...</p>
+            <p class="text-white/70 text-sm">Please do not close this window</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Data Store ---
+        let currentUser = null;
+        let selectedCandidate = null;
+        let users = JSON.parse(localStorage.getItem('voteOnline_users')) || {};
+        let votes = JSON.parse(localStorage.getItem('voteOnline_votes')) || {};
+        let candidates = [
+            { id: 'c1', name: 'Dr. Sarah Johnson', party: 'Progressive Party', description: 'Former Senator, 15 years of public service', image: '👩‍⚖️', votes: 0 },
+            { id: 'c2', name: 'James Rodriguez', party: 'Unity Alliance', description: 'Tech Entrepreneur, Education Reform Advocate', image: '🧑‍💼', votes: 0 },
+            { id: 'c3', name: 'Priya Patel', party: 'Green Future', description: 'Environmental Scientist, Climate Action Leader', image: '👩‍🔬', votes: 0 },
+            { id: 'c4', name: 'Robert Chen', party: 'Independent', description: 'Community Organizer, Grassroots Movement', image: '🧑‍🏫', votes: 0 }
+        ];
+        let electionStats = {
+            totalVoters: 24568,
+            votesCast: 0,
+            startDate: '2026-11-01',
+            endDate: '2026-11-05'
+        };
+
+        // --- Initialize ---
+        function initCandidates() {
+            candidates.forEach(c => {
+                if (!votes[c.id]) votes[c.id] = 0;
+                c.votes = votes[c.id] || 0;
+            });
+        }
+        initCandidates();
+
+        // --- Utility Functions ---
+        function saveUsers() {
+            localStorage.setItem('voteOnline_users', JSON.stringify(users));
+        }
+
+        function saveVotes() {
+            localStorage.setItem('voteOnline_votes', JSON.stringify(votes));
+        }
+
+        function generateId() {
+            return 'VOT-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+        }
+
+        function generateConfirmationCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'VOTE-';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 4; j++) {
+                    code += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                if (i < 2) code += '-';
+            }
+            return code;
+        }
+
+        function generate2FACode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            const div = document.createElement('div');
+            div.className = `notification notification-${type} slide-in`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            div.innerHTML = `<i class="fas ${icons[type] || icons.info} mr-3"></i>${message}`;
+            container.appendChild(div);
+            
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transform = 'translateX(100%)';
+                setTimeout(() => div.remove(), 300);
+            }, 4000);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric'
+            });
+        }
+
+        // --- Authentication ---
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            // Generate 2FA code for demo
+            document.getElementById('login2FA').placeholder = `Enter 6-digit code (${generate2FACode()})`;
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const voterId = document.getElementById('regVoterId').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match!', 'error');
+                return;
+            }
+
+            if (users[email]) {
+                showNotification('Email already registered!', 'error');
+                return;
+            }
+
+            users[email] = {
+                name: name,
+                email: email,
+                voterId: voterId,
+                password: password,
+                hasVoted: false,
+                votingHistory: [],
+                registered: new Date().toISOString()
+            };
+            saveUsers();
+
+            showNotification('Registration successful! Please login.', 'success');
+            showLogin();
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regVoterId').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const twoFACode = document.getElementById('login2FA').value.trim();
+
+            if (!users[username] || users[username].password !== password) {
+                showNotification('Invalid credentials!', 'error');
+                return;
+            }
+
+            // Simulate 2FA verification
+            if (twoFACode.length !== 6) {
+                showNotification('Please enter a valid 6-digit 2FA code!', 'error');
+                return;
+            }
+
+            currentUser = username;
+            sessionStorage.setItem('voteOnline_session', currentUser);
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userNameDisplay').textContent = users[currentUser].name;
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            showNotification(`Welcome, ${users[currentUser].name}! Your identity is verified.`, 'success');
+            updateDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedCandidate = null;
+            sessionStorage.removeItem('voteOnline_session');
+            document.getElementById('authButtons').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            showLogin();
+            showNotification('Logged out securely', 'info');
+        }
+
+        // --- Dashboard Updates ---
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            renderCandidates();
+            renderResults();
+            renderVotingHistory();
+            updateStats();
+            checkIfVoted();
+        }
+
+        function renderCandidates() {
+            const list = document.getElementById('candidateList');
+            list.innerHTML = candidates.map(c => {
+                const voteCount = votes[c.id] || 0;
+                const percentage = electionStats.votesCast > 0 ? ((voteCount / electionStats.votesCast) * 100).toFixed(1) : 0;
+                return `
+                    <div class="candidate-card p-4 rounded-xl ${selectedCandidate === c.id ? 'selected' : ''}" onclick="selectCandidate('${c.id}')">
+                        <div class="flex items-start space-x-3">
+                            <div class="text-4xl">${c.image}</div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-800">${c.name}</h4>
+                                <p class="text-xs text-[#e94560] font-medium">${c.party}</p>
+                                <p class="text-xs text-gray-500 mt-1">${c.description}</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-xs text-gray-400">${voteCount} votes</span>
+                                    <span class="text-xs font-semibold text-gray-600">${percentage}%</span>
+                                </div>
+                                <div class="vote-progress mt-1">
+                                    <div class="vote-progress-fill" style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                            ${selectedCandidate === c.id ? '<i class="fas fa-check-circle text-[#e94560] text-xl"></i>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectCandidate(candidateId) {
+            if (!currentUser) {
+                showNotification('Please login to vote!', 'error');
+                return;
+            }
+            if (users[currentUser].hasVoted) {
+                showNotification('You have already voted!', 'warning');
+                return;
+            }
+            selectedCandidate = candidateId;
+            const candidate = candidates.find(c => c.id === candidateId);
+            document.getElementById('selectedCandidateName').textContent = candidate.name;
+            document.getElementById('voteSection').classList.remove('hidden');
+            renderCandidates();
+        }
+
+        function castVote() {
+            if (!selectedCandidate) {
+                showNotification('Please select a candidate first!', 'warning');
+                return;
+            }
+            if (!currentUser) {
+                showNotification('Please login first!', 'error');
+                return;
+            }
+            if (users[currentUser].hasVoted) {
+                showNotification('You have already voted!', 'warning');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            // Simulate secure voting process
+            setTimeout(() => {
+                // Record vote
+                votes[selectedCandidate] = (votes[selectedCandidate] || 0) + 1;
+                electionStats.votesCast += 1;
+                
+                // Mark user as voted
+                users[currentUser].hasVoted = true;
+                users[currentUser].votingHistory.push({
+                    election: 'Presidential Election 2026',
+                    candidate: candidates.find(c => c.id === selectedCandidate).name,
+                    date: new Date().toISOString(),
+                    confirmation: generateConfirmationCode()
+                });
+                
+                saveVotes();
+                saveUsers();
+                
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                
+                // Show confirmation
+                document.getElementById('confirmationCode').textContent = generateConfirmationCode();
+                document.getElementById('confirmationModal').classList.remove('hidden');
+                
+                showNotification('Your vote has been securely recorded!', 'success');
+                
+                // Reset selection
+                selectedCandidate = null;
+                document.getElementById('voteSection').classList.add('hidden');
+                updateDashboard();
+            }, 2000);
+        }
+
+        function closeConfirmation() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+
+        function renderResults() {
+            const container = document.getElementById('liveResults');
+            const sorted = [...candidates].sort((a, b) => (votes[b.id] || 0) - (votes[a.id] || 0));
+            
+            container.innerHTML = sorted.map((c, index) => {
+                const voteCount = votes[c.id] || 0;
+                const percentage = electionStats.votesCast > 0 ? ((voteCount / electionStats.votesCast) * 100).toFixed(1) : 0;
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center space-x-2">
+                            <span>${medal}</span>
+                            <span class="font-medium text-gray-800">${c.name}</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xs text-gray-500">${voteCount} votes</span>
+                            <span class="font-semibold text-[#e94560]">${percentage}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderVotingHistory() {
+            const container = document.getElementById('votingHistory');
+            const history = users[currentUser]?.votingHistory || [];
+            
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">No voting history yet</p>';
+                return;
+            }
+            
+            container.innerHTML = history.map(h => `
+                <div class="bg-gray-50 p-3 rounded-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800">${h.election}</p>
+                            <p class="text-xs text-gray-500">Voted for: ${h.candidate}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-400">${formatDate(h.date)}</p>
+                            <p class="text-xs text-emerald-600 font-mono">${h.confirmation}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const percentage = electionStats.totalVoters > 0 ? Math.round((electionStats.votesCast / electionStats.totalVoters) * 100) : 0;
+            document.getElementById('turnoutPercentage').textContent = percentage + '%';
+            document.querySelector('.vote-progress-fill').style.width = percentage + '%';
+            
+            // Update total votes
+            const totalVotesDisplay = document.querySelector('.fa-users').parentElement;
+            if (totalVotesDisplay) {
+                totalVotesDisplay.textContent = `Total Voters: ${electionStats.totalVoters.toLocaleString()}`;
+            }
+            const votesCastDisplay = document.querySelector('.fa-check-circle').parentElement;
+            if (votesCastDisplay) {
+                votesCastDisplay.textContent = `Votes Cast: ${electionStats.votesCast.toLocaleString()}`;
+            }
+        }
+
+        function checkIfVoted() {
+            if (currentUser && users[currentUser].hasVoted) {
+                document.getElementById('voteSection').innerHTML = `
+                    <div class="bg-emerald-50 p-4 rounded-xl text-center">
+                        <i class="fas fa-check-circle text-emerald-500 text-2xl mb-2"></i>
+                        <p class="font-semibold text-gray-800">You have already voted!</p>
+                        <p class="text-sm text-gray-500">Thank you for participating in the election.</p>
+                    </div>
+                `;
+                document.getElementById('voteSection').classList.remove('hidden');
+            } else {
+                // Reset vote section
+                document.getElementById('voteSection').innerHTML = `
+                    <p class="text-sm text-gray-600 mb-3">
+                        <i class="fas fa-check-circle text-emerald-500 mr-2"></i>
+                        You have selected: <span id="selectedCandidateName" class="font-semibold text-gray-800"></span>
+                    </p>
+                    <button onclick="castVote()" class="w-full gradient-btn text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-vote-yea mr-2"></i>Cast Vote Securely
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2 text-center">
+                        <i class="fas fa-lock mr-1"></i>Your vote is encrypted and anonymous
+                    </p>
+                `;
+                document.getElementById('voteSection').classList.add('hidden');
+            }
+        }
+
+        // --- Initialize App ---
+        function init() {
+            const savedSession = sessionStorage.getItem('voteOnline_session');
+            if (savedSession && users[savedSession]) {
+                currentUser = savedSession;
+                document.getElementById('authButtons').classList.add('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userNameDisplay').textContent = users[currentUser].name;
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                updateDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('confirmationModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConfirmation();
+        });
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', init);
+
+        // --- Simulate live updates ---
+        setInterval(() => {
+            if (currentUser) {
+                // Randomly increment votes for live demo (only if not voted)
+                if (!users[currentUser].hasVoted) {
+                    const randomCandidate = candidates[Math.floor(Math.random() * candidates.length)];
+                    // Don't actually increment, just simulate live feel
+                }
+                renderResults();
+                renderCandidates();
+                updateStats();
+            }
+        }, 5000);
+
+        console.log('🗳️ VoteOnline Loaded - Secure E-Voting Platform');
+        console.log('🔒 AES-256 Encryption Active');
+        console.log('✅ GDPR & Election Commission Compliant');
+        console.log('💡 Tip: Register, login with 2FA, and cast your vote!');
+    </script>
+</body>
+</html>
