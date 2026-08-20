@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Journal of Scientific and Social Excellence (IJSSE)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0f172a;
+            --accent: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Top Bar for ISSN Info */
+        .top-bar {
+            background-color: var(--secondary);
+            color: #cbd5e1;
+            padding: 8px 40px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar span {
+            color: #93c5fd;
+            font-weight: 600;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo small {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: normal;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: #f1f5f9;
+        }
+
+        .btn-register {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            background-color: #1d4ed8 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 70px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
+
+        .scopus-badge {
+            background-color: #0284c7;
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Main Container & Layout */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .grid-three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* About Journal Section */
+        .about-section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 35px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-section h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .about-section p {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 15px;
+        }
+
+        .issn-box {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .issn-box h4 {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .issn-box ul {
+            list-style: none;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        .issn-box ul li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top ISSN Information Bar -->
+    <div class="top-bar">
+        <div>International Journal of Scientific and Social Excellence (IJSSE)</div>
+        <div>Print ISSN: <span>2395-1443</span> | Online ISSN: <span>2395-1451</span></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">
+            IJSSE
+            <small>Scopus-Indexed Journal Publisher</small>
+        </a>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">About Journal</a>
+            <a href="#">For Authors</a>
+            <a href="#">For Reviewers</a>
+            <a href="#">For Editors</a>
+            <a href="#" class="btn-register">Register / Login</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="scopus-badge">Scopus Indexed Publisher</div>
+        <h1>Advancing Scientific & Social Excellence</h1>
+        <p>A professional and user-friendly platform supporting a transparent, efficient submission, peer review, and academic publishing workflow.</p>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Portal Role Cards -->
+        <div class="grid-three">
+            <div class="card">
+                <div>
+                    <h3>For Authors</h3>
+                    <p>Submit your manuscripts, track real-time submission status, and access comprehensive formatting and ethical guidelines.</p>
+                </div>
+                <a href="#" class="card-link">Author Portal &rarr;</a>
+            </div>
+
+            <div class="card" style="border-top-color: #10b981;">
+                <div>
+                    <h3>For Reviewers</h3>
+                    <p>Access specialized peer-review tools, evaluate assigned submissions securely, and download reviewer resources.</p>
+                </div>
+                <a href="#" class="card-link" style="color: #10b981;">Reviewer Workspace &rarr;</a>
+            </div>
+
+            <div class="card" style="border-top-color: #f59e0b;">
+                <div>
+                    <h3>For Editors</h3>
+                    <p>Manage incoming submissions, coordinate transparent peer reviews, and oversee publication and issue scheduling.</p>
+                </div>
+                <a href="#" class="card-link" style="color: #f59e0b;">Editor Dashboard &rarr;</a>
+            </div>
+        </div>
+
+        <!-- About Journal & ISSN Details -->
+        <div class="about-section">
+            <div>
+                <h2>About the Journal</h2>
+                <p>
+                    The International Journal of Scientific and Social Excellence (IJSSE) is dedicated to publishing high-impact peer-reviewed research bridging scientific innovation and social progress. Our mission is to provide researchers worldwide with a trustworthy platform that guarantees global visibility and academic integrity.
+                </p>
+                <p>
+                    Through our integrated digital workflows, authors, reviewers, and editors experience seamless communication, ensuring reduced turnaround times and heightened transparency across all publication stages.
+                </p>
+            </div>
+            
+            <div class="issn-box">
+                <h4>Publication Identifiers</h4>
+                <ul>
+                    <li><strong>Print ISSN:</strong> 2395-1443</li>
+                    <li><strong>Online ISSN:</strong> 2395-1451</li>
+                    <li><strong>Frequency:</strong> Quarterly</li>
+                    <li><strong>Indexing:</strong> Scopus & Crossref</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
